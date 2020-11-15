@@ -1,0 +1,31 @@
+﻿<div class="pl-2 pr-2">
+    <div class="row border">
+        <input type="button" class="col-3 border-0 form-control @(!IsCharacterLocked ? "btn-enabled-minus" : "")" @onclick="() => DecrementValue()" @onkeydown="(e) => IsShiftPressed = e.ShiftKey" @onkeyup="(e) => IsShiftPressed = false" value="-" disabled="@IsCharacterLocked" />
+        <label class="col-6 text-center border-0 counter" disabled="@IsCharacterLocked">@Value</label>
+        <input type="button" class="col-3 border-0 form-control @(!IsCharacterLocked ? "btn-enabled-plus" : "")" @onclick="() => IncrementValue()"  @onkeydown="(e) => IsShiftPressed = e.ShiftKey" @onkeyup="(e) => IsShiftPressed = false" value="+" disabled="@IsCharacterLocked" />
+    </div>
+</div>
+
+    @code {
+        [Parameter]
+        public bool IsCharacterLocked { get; set; }
+        [Parameter]
+        public int Value { get; set; }
+        [Parameter]
+        public int Max { get; set; } = 20;
+        [Parameter]
+        public int Min { get; set; } = 0;
+
+        private bool IsShiftPressed { get; set; } = false;
+
+        private void IncrementValue()
+        {
+            Value += (IsShiftPressed ? 10 : 1);
+            if (Value > Max) Value = Max;
+        }
+        private void DecrementValue()
+        {
+            Value -= (IsShiftPressed ? 10 : 1);
+            if (Value < Min) Value = Min;
+        }
+    }
