@@ -1,5 +1,8 @@
-﻿<div class="box-shadow border pb-3 shadow pr-4 bg-lightish" style="max-height: inherit;">
-    <input type="button" value="@EditButtonText" @onclick="() => ToggleEditable()" class="btn btn-dark m-2" />
+﻿@inject ICharacterRepository _characterData
+
+<div class="box-shadow border pb-3 shadow pr-4 bg-lightish" style="max-height: inherit;">
+    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "d-none" : "" )" value="@EditButtonText" @onclick="() => ToggleEditable()"/>
+    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "" : "d-none" )" value="Submit" @onclick="() => _characterData.AddToCharacterList(CurrentCharacter)" disabled="@CanSubmit"/>
     <div class="row">
         <div class="col-1"></div>
         <div class="col-4 form-group">
@@ -82,7 +85,7 @@
     </div>
     <hr />
     <div class="pl-2">
-        @foreach (CharacterActions action in CurrentCharacter.Actions)
+        @foreach (Models.Character.CharacterActions action in CurrentCharacter.Actions)
         {
 
             <div class="row ">
@@ -169,16 +172,28 @@
             <button type="button" class="btn btn-dark col-btn @(IsAbilityAdded ? "d-none": "")" @onclick="() => IsAbilityAdded = !IsAbilityAdded" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Ability</button>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new CharacterActions() { IsWeaponAttack = true, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Attack</button>
+            <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = true, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Attack</button>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new CharacterActions() { IsWeaponAttack = false, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Spell</button>
+            <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = false, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Spell</button>
         </div>
     </div>
 
 </div>
 @code {
-    private EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
+
+    [Parameter]
+    public bool IsNewCharacter { get; set; }
+
+    [Parameter]
+    public EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
+
+    private bool CanSubmit => string.IsNullOrWhiteSpace(CurrentCharacter.Name)
+        || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
+        || string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Description)
+        || string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Title)
+        || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
+        || CurrentCharacter.Actions.Any(Action => string.IsNullOrWhiteSpace(Action.CharacterAttack.Description) || string.IsNullOrWhiteSpace(Action.CharacterAttack.Name));
     private bool IsCharacterLocked { get; set; }
     private string EditButtonText => IsCharacterLocked ? "Edit" : "Confirm";
     private bool IsAbilityAdded { get; set; } = false;
@@ -186,8 +201,11 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        IsCharacterLocked = true;
-        CurrentCharacter = new Models.Character.Character();
+        IsCharacterLocked = !IsNewCharacter;
+        if(CurrentCharacter == null)
+        {
+            CurrentCharacter = new Models.Character.Character();
+        }
     }
 
 

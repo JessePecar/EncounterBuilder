@@ -1,7 +1,10 @@
 ﻿using EncounterBuilder.BusinessRules.Contracts;
+using EncounterBuilder.Models.Character;
 using EncounterBuilder.Models.Saves;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace EncounterBuilder.BusinessRules.Clients
 {
@@ -18,6 +21,32 @@ namespace EncounterBuilder.BusinessRules.Clients
             VerifyFiles();
         }
 
+        #region Write
+
+        public async Task AddToCharacterList(Character newCharacter)
+        {
+            KeyValuePair<JsonTypes, string> characterSave = new KeyValuePair<JsonTypes, string>(JsonTypes.Character, JsonConvert.SerializeObject(ResetJson(JsonTypes.Character, newCharacter)));
+
+            await SaveToJson(characterSave);
+        }
+
+        #endregion
+
+        #region Read
+
+        public async Task<List<Character>> GetAllCharacters()
+        {
+            string characters = string.Empty;
+            using (StreamReader reader = new StreamReader(_jsonDirectory[JsonTypes.Character]))
+            {
+                characters = await reader.ReadToEndAsync();
+            }
+
+            return JsonConvert.DeserializeObject<List<Character>>(characters);
+        }
+
+        #endregion
+
         #region helper methods
 
         private void VerifyFiles()
@@ -28,12 +57,31 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
         }
 
-        private void SaveToJson(KeyValuePair<JsonTypes, string> jsonFile)
+        private async Task SaveToJson(KeyValuePair<JsonTypes, string> jsonFile)
         {
             using(StreamWriter write = new StreamWriter(_jsonDirectory.GetValueOrDefault(jsonFile.Key)))
             {
-                write.WriteAsync(jsonFile.Value);
+                await write.WriteAsync(jsonFile.Value);
             }
+        }
+
+        private async Task<List<Character>> ResetJson(JsonTypes fileKey, Character newCharacter)
+        {
+            string characters = string.Empty;
+            using (StreamReader reader = new StreamReader(_jsonDirectory.GetValueOrDefault(fileKey)))
+            {
+                characters = await reader.ReadToEndAsync();
+            }
+
+            if (File.Exists(_jsonDirectory[fileKey]))
+            {
+                File.Delete(_jsonDirectory[fileKey]);
+            }
+            File.Create(_jsonDirectory[fileKey]);
+
+            List<Character> savedCharacters = JsonConvert.DeserializeObject<List<Character>>(characters);
+            savedCharacters.Add(newCharacter);
+            return savedCharacters;
         }
         #endregion
     }
