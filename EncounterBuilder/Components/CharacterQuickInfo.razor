@@ -1,0 +1,90 @@
+﻿<div class="col-1 form-group ">
+    <div><label class="text-center">Max Health </label></div>
+    @if (IsNameEditable)
+    {
+        <NumberInput Value="@CurrentCharacter.MaxHealth" IsCharacterLocked="@IsCharacterLocked" Max="1000"></NumberInput>
+    }
+    else
+    {
+        <div><label class="text-center">@CurrentCharacter.MaxHealth</label></div>
+    }
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">Armor Class</label></div>
+    @if (IsNameEditable)
+    {
+        <NumberInput Value="@CurrentCharacter.ArmorClass" IsCharacterLocked="@IsCharacterLocked" Max="49" />
+    }
+    else
+    {
+        <div><label class="text-center">@CurrentCharacter.ArmorClass</label></div>
+    }
+</div>
+
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CurrentCharacter.Speed)</label></div>
+    @if (IsNameEditable)
+    {
+        <NumberInput Value="@CurrentCharacter.Speed" IsCharacterLocked="@IsCharacterLocked" Max="100" />
+    }
+    else
+    {
+        <div><label class="text-center">@CurrentCharacter.Speed ft.</label></div>
+    }
+
+</div>
+<div class="col-1 form-group">
+    <div><label class="text-center">@nameof(CurrentCharacter.Alignment)</label></div>
+    @if (IsNameEditable)
+    {
+        <div>
+            <select class="text-center form-control" @bind="@CurrentCharacter.Alignment" disabled="@IsCharacterLocked">
+                <option>@Alignment.LawfulGood.ToString()</option>
+                <option>@Alignment.LawfulNeutral.ToString()</option>
+                <option>@Alignment.LawfulEvil.ToString()</option>
+                <option>@Alignment.NeutralGood.ToString()</option>
+                <option>@Alignment.TrueNeutral.ToString()</option>
+                <option>@Alignment.NeutralEvil.ToString()</option>
+                <option>@Alignment.ChaoticGood.ToString()</option>
+                <option>@Alignment.ChaoticNeutral.ToString()</option>
+                <option>@Alignment.ChaoticEvil.ToString()</option>
+            </select>
+        </div>
+    }
+    else
+    {
+        <div><label class="text-center">@CurrentCharacter.Name</label></div>
+    }
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CurrentCharacter.Race)</label></div>
+    @if (IsNameEditable)
+    {
+        <div><input class="text-center form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Race) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Race" disabled="@IsCharacterLocked" /></div>
+    }
+    else
+    {
+        <div><label class="text-center">@CurrentCharacter.Race</label></div>
+    }
+
+</div>
+<div class="col-2 form-group ">
+    <div><label class="text-center">@nameof(CurrentCharacter.Language)</label></div>
+    @if (IsNameEditable)
+    {
+        <div><input class="text-center form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Language) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Language" disabled="@IsCharacterLocked" /></div>
+    }
+    else
+    {
+        <div><label class="text-center">@CurrentCharacter.Name</label></div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Models.Character.Character CurrentCharacter { get; set; }
+    [Parameter]
+    public bool IsCharacterLocked { get; set; }
+    [Parameter]
+    public bool IsNameEditable { get; set; }
+}

@@ -30,6 +30,17 @@ namespace EncounterBuilder.BusinessRules.Clients
             await SaveToJson(characterSave);
         }
 
+        public async Task UpdateCurrentCharacter(Character updCharacter)
+        {
+            List<Character> currentCharacters = await ResetJson(JsonTypes.Character);
+            currentCharacters.RemoveAll(ch => ch.Name == updCharacter.Name);
+            currentCharacters.Add(updCharacter);
+
+            KeyValuePair<JsonTypes, string> characterSave = new KeyValuePair<JsonTypes, string>(JsonTypes.Character, JsonConvert.SerializeObject(currentCharacters));
+
+            await SaveToJson(characterSave);
+        }
+
         #endregion
 
         #region Read
@@ -65,7 +76,7 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
         }
 
-        private async Task<List<Character>> ResetJson(JsonTypes fileKey, Character newCharacter)
+        private async Task<List<Character>> ResetJson(JsonTypes fileKey, Character newCharacter = null)
         {
             string characters = string.Empty;
             using (StreamReader reader = new StreamReader(_jsonDirectory.GetValueOrDefault(fileKey)))
@@ -78,9 +89,12 @@ namespace EncounterBuilder.BusinessRules.Clients
                 File.Delete(_jsonDirectory[fileKey]);
             }
             File.Create(_jsonDirectory[fileKey]);
-
-            List<Character> savedCharacters = JsonConvert.DeserializeObject<List<Character>>(characters);
-            savedCharacters.Add(newCharacter);
+            List<Character> savedCharacters = new List<Character>();
+            if (newCharacter != null)
+            {
+                savedCharacters = JsonConvert.DeserializeObject<List<Character>>(characters);
+                savedCharacters?.Add(newCharacter);
+            }
             return savedCharacters;
         }
         #endregion
