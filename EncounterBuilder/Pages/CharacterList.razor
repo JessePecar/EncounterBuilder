@@ -1,0 +1,37 @@
+﻿@page "/CharacterList"
+@inject ICharacterRepository _characterData;
+
+<div class="p-3 pr-0 h-100 pre-scrollable">
+    <div class="p-2 row">
+        <div class="nav-item col-2">
+            <NavLink class="nav-link" href="/AddNewCharacter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add Characters
+            </NavLink>
+        </div>
+    </div>
+    <div class="h-100" style="min-height:100%">
+        @foreach (Models.Character.Character character in characters)
+        {
+            <Character CurrentCharacter="@character" IsNewCharacter="false"></Character>
+        }
+    </div>
+</div>
+@code {
+    List<Models.Character.Character> characters { get; set; } = new List<Models.Character.Character>();
+    protected override async void OnInitialized()
+    {
+        GetAllCharacters();
+        base.OnInitialized();
+
+    }
+
+    private async Task GetAllCharacters()
+    {
+        characters = await _characterData.GetAllCharacters();
+        if (characters == null)
+        {
+            characters = new List<Models.Character.Character>();
+        }
+        StateHasChanged();
+    }
+}

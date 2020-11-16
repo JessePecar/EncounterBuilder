@@ -1,198 +1,177 @@
-﻿<div class="box-shadow border pb-3 shadow pr-4 bg-lightish" style="max-height: inherit;">
-    <input type="button" value="@EditButtonText" @onclick="() => ToggleEditable()" class="btn btn-dark m-2" />
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-4 form-group">
-            <div><label class="text-center">Character Name</label></div>
-            <input type="search" class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Name) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Name" placeholder="Enter Name" disabled="@IsCharacterLocked" />
-        </div>
-        <div class="col-1 form-group">
-            <div><label class="text-center">@nameof(CurrentCharacter.Stats.Strength)</label></div>
-            <NumberInput Value="@CurrentCharacter.Stats.Strength" IsCharacterLocked="@IsCharacterLocked" />
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Stats.Dexterity)</label></div>
-            <NumberInput Value="@CurrentCharacter.Stats.Dexterity" IsCharacterLocked="@IsCharacterLocked" />
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Stats.Constitution)</label></div>
-            <NumberInput Value="@CurrentCharacter.Stats.Constitution" IsCharacterLocked="@IsCharacterLocked" />
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Stats.Intelligence)</label></div>
-            <NumberInput Value="@CurrentCharacter.Stats.Intelligence" IsCharacterLocked="@IsCharacterLocked" />
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Stats.Wisdom)</label></div>
-            <NumberInput Value="@CurrentCharacter.Stats.Wisdom" IsCharacterLocked="@IsCharacterLocked" />
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Stats.Charisma)</label></div>
-            <NumberInput Value="@CurrentCharacter.Stats.Charisma" IsCharacterLocked="@IsCharacterLocked"></NumberInput>
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">Minimum Level</label></div>
-            <NumberInput Value="@CurrentCharacter.Level" IsCharacterLocked="@IsCharacterLocked" />
-        </div>
+﻿@inject ICharacterRepository _characterData
+@inject IJSRuntime JsRuntime;
 
-    </div>
+<div class="box-shadow border pb-3 shadow pr-4 bg-lightish" style="max-height: inherit;">
+    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "d-none" : "" )" value="@EditButtonText" @onclick="() => ToggleEditable()" />
+    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "" : "d-none" )" value="Submit" @onclick="() => SubmitCharacter()" disabled="@CanSubmit" />
+    <input type="button" class="btn btn-light text-dark m-2" value="@(IsSimpleView ? "Expand" : "Collapse")" @onclick="() => ToggleCollapse()" />
+    <BasicCharacter CurrentCharacter="CurrentCharacter" IsCharacterLocked="IsCharacterLocked" IsNameEditable="true"></BasicCharacter>
     <div class="row">
         <div class="col-1"></div>
         <div class="col-4 form-group">
             <div><label class="text-center">@nameof(@CurrentCharacter.Description)</label></div>
             <textarea class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Description) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="2" />
         </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">Max Health </label></div>
-            <NumberInput Value="@CurrentCharacter.MaxHealth" IsCharacterLocked="@IsCharacterLocked" Max="1000"></NumberInput>
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">Armor Class</label></div>
-            <NumberInput Value="@CurrentCharacter.ArmorClass" IsCharacterLocked="@IsCharacterLocked" Max="49" />
-        </div>
-
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Speed)</label></div>
-            <NumberInput Value="@CurrentCharacter.Speed" IsCharacterLocked="@IsCharacterLocked" Max="100" />
-        </div>
-        <div class="col-1 form-group">
-            <div><label class="text-center">@nameof(CurrentCharacter.Alignment)</label></div>
-            <div>
-                <select class="text-center form-control" @bind="@CurrentCharacter.Alignment" disabled="@IsCharacterLocked">
-                    <option>@Alignment.LawfulGood.ToString()</option>
-                    <option>@Alignment.LawfulNeutral.ToString()</option>
-                    <option>@Alignment.LawfulEvil.ToString()</option>
-                    <option>@Alignment.NeutralGood.ToString()</option>
-                    <option>@Alignment.TrueNeutral.ToString()</option>
-                    <option>@Alignment.NeutralEvil.ToString()</option>
-                    <option>@Alignment.ChaoticGood.ToString()</option>
-                    <option>@Alignment.ChaoticNeutral.ToString()</option>
-                    <option>@Alignment.ChaoticEvil.ToString()</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-1 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Race)</label></div>
-            <div><input class="text-center form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Race) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Race" disabled="@IsCharacterLocked" /></div>
-        </div>
-        <div class="col-2 form-group ">
-            <div><label class="text-center">@nameof(CurrentCharacter.Language)</label></div>
-            <div><input class="text-center form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Language) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Language" disabled="@IsCharacterLocked" /></div>
-        </div>
+        <CharacterQuickInfo CurrentCharacter="CurrentCharacter" IsCharacterLocked="IsCharacterLocked" IsNameEditable="true"></CharacterQuickInfo>
     </div>
     <hr />
-    <div class="pl-2">
-        @foreach (CharacterActions action in CurrentCharacter.Actions)
-        {
+    <div class="@(IsSimpleView ? "d-none" : "")">
+        <div class="pl-2">
+            @foreach (Models.Character.CharacterActions action in CurrentCharacter.Actions)
+            {
 
-            <div class="row ">
+                <div class="row ">
 
-                <div class="col-2 form-group">
-                    <div><label class="text-center">Attack Name</label></div>
-                    <input type="search" placeholder="Enter Name" class="form-control @((string.IsNullOrWhiteSpace(action.CharacterAttack.Name) ? "is-invalid" : "is-valid"))" @bind="@action.CharacterAttack.Name" disabled="@IsCharacterLocked" />
-                </div>
-                <div class="col-1 form-group">
-                    <div><label class="text-center">Dice Damage</label></div>
-                    <input type="search" placeholder="Ex: 3D6+2" class="form-control @((string.IsNullOrWhiteSpace(action.CharacterAttack.Damage) ? "is-invalid" : "is-valid"))" @bind="@action.CharacterAttack.Damage" disabled="@IsCharacterLocked" />
-                </div>
-                <div class="col-1 form-group">
-                    <div><label class="text-center">Damage Type</label></div>
-                    @if (action.IsWeaponAttack)
-                    {
-                        <select class="text-center form-control" @bind="@action.CharacterAttack.DamageType" disabled="@IsCharacterLocked">
-                            <option>@DamageType.None.ToString()</option>
-                            <option>@DamageType.Piercing.ToString()</option>
-                            <option>@DamageType.Ranged.ToString()</option>
-                            <option>@DamageType.Slashing.ToString()</option>
-                        </select>
-                    }
-                    else
-                    {
-                        <select class="text-center form-control" @bind="@action.CharacterAttack.SpellDamageType" disabled="@IsCharacterLocked">
-                            <option>@SpellType.None.ToString()</option>
-                            <option>@SpellType.Acid.ToString()</option>
-                            <option>@SpellType.Cold.ToString()</option>
-                            <option>@SpellType.Fire.ToString()</option>
-                            <option>@SpellType.Holy.ToString()</option>
-                            <option>@SpellType.Light.ToString()</option>
-                            <option>@SpellType.Poison.ToString()</option>
-                        </select>
-                    }
-                </div>
-                <div class="col-1 form-group ">
-                    <div><label class="text-center">Range</label></div>
-                    <NumberInput Value="@action.CharacterAttack.Range" IsCharacterLocked="@IsCharacterLocked" Max="1000" />
-                </div>
-                @if (!action.IsWeaponAttack)
-                {
-                    <div class="col-1 form-group ">
-                        <div><label class="text-center">Saving Throw</label></div>
-                        <NumberInput Value="@action.CharacterAttack.SavingThrow" IsCharacterLocked="@IsCharacterLocked" Max="40" />
+                    <div class="col-2 form-group">
+                        <div><label class="text-center">Attack Name</label></div>
+                        <input type="search" placeholder="Enter Name" class="form-control @((string.IsNullOrWhiteSpace(action.CharacterAttack.Name) ? "is-invalid" : "is-valid"))" @bind="@action.CharacterAttack.Name" disabled="@IsCharacterLocked" />
+                    </div>
+                    <div class="col-1 form-group">
+                        <div><label class="text-center">Dice Damage</label></div>
+                        <input type="search" placeholder="Ex: 3D6+2" class="form-control @((string.IsNullOrWhiteSpace(action.CharacterAttack.Damage) ? "is-invalid" : "is-valid"))" @bind="@action.CharacterAttack.Damage" disabled="@IsCharacterLocked" />
+                    </div>
+                    <div class="col-1 form-group">
+                        <div><label class="text-center">Damage Type</label></div>
+                        @if (action.IsWeaponAttack)
+                        {
+                            <select class="text-center form-control" @bind="@action.CharacterAttack.DamageType" disabled="@IsCharacterLocked">
+                                <option>@DamageType.None.ToString()</option>
+                                <option>@DamageType.Piercing.ToString()</option>
+                                <option>@DamageType.Ranged.ToString()</option>
+                                <option>@DamageType.Slashing.ToString()</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="text-center form-control" @bind="@action.CharacterAttack.SpellDamageType" disabled="@IsCharacterLocked">
+                                <option>@SpellType.None.ToString()</option>
+                                <option>@SpellType.Acid.ToString()</option>
+                                <option>@SpellType.Cold.ToString()</option>
+                                <option>@SpellType.Fire.ToString()</option>
+                                <option>@SpellType.Holy.ToString()</option>
+                                <option>@SpellType.Light.ToString()</option>
+                                <option>@SpellType.Poison.ToString()</option>
+                            </select>
+                        }
                     </div>
                     <div class="col-1 form-group ">
                         <div><label class="text-center">Range</label></div>
-                        <select class="text-center form-control" @bind="@action.CharacterAttack.ThrowType" disabled="@IsCharacterLocked">
-                            <option>@SavingThrowTypes.Dexterity.ToString()</option>
-                            <option>@SavingThrowTypes.Charisma.ToString()</option>
-                            <option>@SavingThrowTypes.Constitution.ToString()</option>
-                            <option>@SavingThrowTypes.Intelligence.ToString()</option>
-                            <option>@SavingThrowTypes.Strength.ToString()</option>
-                            <option>@SavingThrowTypes.Wisdom.ToString()</option>
-                        </select>
+                        <NumberInput Value="@action.CharacterAttack.Range" IsCharacterLocked="@IsCharacterLocked" Max="1000" />
                     </div>
-                }
-            </div>
-            <div>
-                <textarea class="form-control @((string.IsNullOrWhiteSpace(action.CharacterAttack.Description) ? "is-invalid" : "is-valid"))" @bind="@action.CharacterAttack.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="2" />
-            </div>
+                    @if (!action.IsWeaponAttack)
+                    {
+                        <div class="col-1 form-group ">
+                            <div><label class="text-center">Saving Throw</label></div>
+                            <NumberInput Value="@action.CharacterAttack.SavingThrow" IsCharacterLocked="@IsCharacterLocked" Max="40" />
+                        </div>
+                        <div class="col-1 form-group ">
+                            <div><label class="text-center">Range</label></div>
+                            <select class="text-center form-control" @bind="@action.CharacterAttack.ThrowType" disabled="@IsCharacterLocked">
+                                <option>@SavingThrowTypes.Dexterity.ToString()</option>
+                                <option>@SavingThrowTypes.Charisma.ToString()</option>
+                                <option>@SavingThrowTypes.Constitution.ToString()</option>
+                                <option>@SavingThrowTypes.Intelligence.ToString()</option>
+                                <option>@SavingThrowTypes.Strength.ToString()</option>
+                                <option>@SavingThrowTypes.Wisdom.ToString()</option>
+                            </select>
+                        </div>
+                    }
+                </div>
+                <div>
+                    <textarea class="form-control @((string.IsNullOrWhiteSpace(action.CharacterAttack.Description) ? "is-invalid" : "is-valid"))" @bind="@action.CharacterAttack.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="2" />
+                </div>
 
-        }
-        <hr class="@(CurrentCharacter.Actions.Any() ? "": "d-none")"/>
-    </div>
-    
-    <div class="pl-2 @(IsAbilityAdded ? "": "d-none")">
-        <div class="row">
-            <div class="col-4 form-group">
-                <div><label class="text-center">Ability Name</label></div>
-                <input type="search" class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Title) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Ablity.Title" placeholder="Enter Name" disabled="@IsCharacterLocked" />
-            </div>
-            <div class="col-4 form-group">
-                <div><label class="text-center">Ability Description</label></div>
-                <textarea class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Description) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Ablity.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="1" />
-            </div>
+            }
+            <hr class="@(CurrentCharacter.Actions.Any() ? "": "d-none")" />
         </div>
-        <hr />
-    </div>
-    <div class="row mt-2">
-        <div class="col-6"></div>
-        <div class="col-2">
-            <button type="button" class="btn btn-dark col-btn @(IsAbilityAdded ? "d-none": "")" @onclick="() => IsAbilityAdded = !IsAbilityAdded" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Ability</button>
-        </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new CharacterActions() { IsWeaponAttack = true, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Attack</button>
-        </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new CharacterActions() { IsWeaponAttack = false, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Spell</button>
-        </div>
-    </div>
 
+        <div class="pl-2 @(IsAbilityAdded ? "": "d-none")">
+            <div class="row">
+                <div class="col-4 form-group">
+                    <div><label class="text-center">Ability Name</label></div>
+                    <input type="search" class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Title) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Ablity.Title" placeholder="Enter Name" disabled="@IsCharacterLocked" />
+                </div>
+                <div class="col-4 form-group">
+                    <div><label class="text-center">Ability Description</label></div>
+                    <textarea class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Description) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Ablity.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="1" />
+                </div>
+            </div>
+            <hr />
+        </div>
+        <div class="row mt-2">
+            <div class="col-6"></div>
+            <div class="col-2">
+                <button type="button" class="btn btn-dark col-btn @(IsAbilityAdded ? "d-none": "")" @onclick="() => IsAbilityAdded = !IsAbilityAdded" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Ability</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = true, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Attack</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = false, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Spell</button>
+            </div>
+        </div>
+    </div>
 </div>
 @code {
-    private EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
+
+    [Parameter]
+    public bool IsNewCharacter { get; set; }
+
+    [Parameter]
+    public EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
+
+    private bool CanSubmit => string.IsNullOrWhiteSpace(CurrentCharacter.Name)
+        || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
+        || (string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Description) && IsAbilityAdded)
+        || (string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Title) && IsAbilityAdded)
+        || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
+        || CurrentCharacter.Actions.Any(Action => string.IsNullOrWhiteSpace(Action.CharacterAttack.Description) || string.IsNullOrWhiteSpace(Action.CharacterAttack.Name));
+
     private bool IsCharacterLocked { get; set; }
     private string EditButtonText => IsCharacterLocked ? "Edit" : "Confirm";
     private bool IsAbilityAdded { get; set; } = false;
+    private bool IsSimpleView { get; set; } = true;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        IsCharacterLocked = true;
-        CurrentCharacter = new Models.Character.Character();
+        IsCharacterLocked = !IsNewCharacter;
+        if (CurrentCharacter == null)
+        {
+            CurrentCharacter = new Models.Character.Character();
+        }
+
+        IsAbilityAdded = !string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Title);
     }
 
 
     private void ToggleEditable()
     {
         IsCharacterLocked = !IsCharacterLocked;
+        if (IsCharacterLocked)
+        {
+            SubmitCharacter();
+        }
+    }
+
+    private async Task SubmitCharacter()
+    {
+        if (_characterData.GetAllCharacters().Result?.Any(ch => ch.Name == CurrentCharacter.Name) ?? false)
+        {
+            bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Item exists, would you like to overwrite?");
+
+            if (confirmed)
+            {
+                _characterData.UpdateCurrentCharacter(CurrentCharacter);
+            }
+            return;
+        }
+
+        await _characterData.AddToCharacterList(CurrentCharacter);
+    }
+
+    private void ToggleCollapse()
+    {
+        IsSimpleView = !IsSimpleView;
     }
 }
