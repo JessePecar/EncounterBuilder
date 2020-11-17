@@ -1,10 +1,13 @@
 ﻿@inject ICharacterRepository _characterData
 @inject IJSRuntime JsRuntime;
-
+@inject NavigationManager NavManager;
 <div class="box-shadow border pb-3 shadow pr-4 bg-lightish" style="max-height: inherit;">
-    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "d-none" : "" )" value="@EditButtonText" @onclick="() => ToggleEditable()" />
-    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "" : "d-none" )" value="Submit" @onclick="() => SubmitCharacter()" disabled="@CanSubmit" />
-    <input type="button" class="btn btn-light text-dark m-2" value="@(IsSimpleView ? "Expand" : "Collapse")" @onclick="() => ToggleCollapse()" />
+    <div class="row p-3">
+        <input type="button" class="btn btn-dark col-1 m-2 @(IsNewCharacter ? "d-none" : "" )" value="@EditButtonText" @onclick="() => ToggleEditable()" />
+        <input type="button" class="btn btn-dark col-1 m-2 @(IsNewCharacter ? "" : "d-none" )" value="Submit" @onclick="() => SubmitCharacter()" disabled="@CanSubmit" />
+        <input type="button" class="btn btn-light col-1 text-dark m-2" value="@(IsSimpleView ? "Expand" : "Collapse")" @onclick="() => ToggleCollapse()" />
+        <DeleteButton IsNotVisible="IsNewCharacter" OnButtonClick="() => OnCharacterDelete()"></DeleteButton>
+    </div>
     <BasicCharacter CurrentCharacter="CurrentCharacter" IsCharacterLocked="IsCharacterLocked" IsNameEditable="true"></BasicCharacter>
     <div class="row">
         <div class="col-1"></div>
@@ -20,7 +23,7 @@
             @foreach (Models.Character.CharacterActions action in CurrentCharacter.Actions)
             {
 
-                <div class="row ">
+                <div class="row">
 
                     <div class="col-2 form-group">
                         <div><label class="text-center">Attack Name</label></div>
@@ -120,6 +123,9 @@
     [Parameter]
     public EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
 
+    [Parameter]
+    public Action OnCharacterChange { get; set; }
+
     private bool CanSubmit => string.IsNullOrWhiteSpace(CurrentCharacter.Name)
         || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
         || (string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Description) && IsAbilityAdded)
@@ -151,27 +157,53 @@
         if (IsCharacterLocked)
         {
             SubmitCharacter();
+            OnCharacterChange.Invoke();
         }
     }
 
     private async Task SubmitCharacter()
     {
-        if (_characterData.GetAllCharacters().Result?.Any(ch => ch.Name == CurrentCharacter.Name) ?? false)
+        try
         {
-            bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Item exists, would you like to overwrite?");
-
-            if (confirmed)
+            if (_characterData.GetAllCharacters().Result?.Any(ch => ch.Name == CurrentCharacter.Name) ?? false)
             {
-                _characterData.UpdateCurrentCharacter(CurrentCharacter);
-            }
-            return;
-        }
+                bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Item exists, would you like to overwrite?");
 
-        await _characterData.AddToCharacterList(CurrentCharacter);
+                if (confirmed)
+                {
+                    _characterData.UpdateCurrentCharacter(CurrentCharacter);
+                }
+                return;
+            }
+
+            await _characterData.AddToCharacterList(CurrentCharacter);
+
+            NavManager.NavigateTo("CharacterList");
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
     }
 
     private void ToggleCollapse()
     {
         IsSimpleView = !IsSimpleView;
+    }
+
+    private async Task OnCharacterDelete()
+    {
+        try
+        {
+            if (await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this character?"))
+            {
+                await _characterData.DeleteCharacter(CurrentCharacter);
+            }
+            OnCharacterChange.Invoke();
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
     }
 }

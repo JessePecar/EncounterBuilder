@@ -12,7 +12,9 @@
     <div class="h-100" style="min-height:100%">
         @foreach (Models.Character.Character character in characters)
         {
-            <Character CurrentCharacter="@character" IsNewCharacter="false"></Character>
+        <div class="pb-1">
+            <Character CurrentCharacter="@character" IsNewCharacter="false" OnCharacterChange="async () => { characters = await _characterData.GetAllCharacters(); StateHasChanged(); }"></Character>
+        </div>
         }
     </div>
 </div>

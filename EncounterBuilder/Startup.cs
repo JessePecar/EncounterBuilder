@@ -23,7 +23,10 @@ namespace EncounterBuilder
         {
             services.AddSingleton<ICharacterRepository, CharacterData>();
             
-            services.AddRazorPages();
+            services.AddRazorPages().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.MaxDepth = 2;
+            });
             services.AddServerSideBlazor();
 
         }
