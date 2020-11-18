@@ -88,6 +88,5 @@ namespace EncounterBuilder.BusinessRules.Clients
         }
         #endregion
 
-        #endregion
     }
 }
