@@ -1,1 +1,157 @@
-[{"Name":"Hobgoblin","Level":1,"Race":"Hobgoblin","Description":"Darkvision 60ft, passive perception 10, health can range from 11-11(2D8+2)","MaxHealth":10,"Speed":30,"ArmorClass":10,"Language":"Common, Goblin","Stats":{"Strength":10,"StrengthModifier":0,"Dexterity":10,"DexterityModifier":0,"Constitution":10,"ConstitutionModifier":0,"Intelligence":10,"IntelligenceModifier":0,"Wisdom":10,"WisdomModifier":0,"Charisma":10,"CharismaModifier":0,"Initiative":0},"Actions":[{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Longsword (2 hand)","Description":"+3 to hit, single target","Damage":"1D10+1","Range":0,"DamageType":1,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Longsword (1 hand)","Description":"+3 to hit, single target","Damage":"1D8+1","Range":0,"DamageType":1,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Longbow","Description":"+3 to hit, disadvantaged past 150ft, single target","Damage":"1D8+1","Range":0,"DamageType":3,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}}],"Ablity":{"Title":"Martial Advantage","Description":"Once per turn, the hobgoblin can deal an extra 7 (2d6) damage to a creature it hits with a weapon attack if that creature is within 5 ft. of an ally of the hobgoblin that isn't incapacitated."},"Alignment":2},{"Name":"Hobgoblin Captain","Level":3,"Race":"Hobgoblin","Description":"Minimum 33 HP (3D10+12)","MaxHealth":10,"Speed":30,"ArmorClass":10,"Language":"Common, Goblin","Stats":{"Strength":10,"StrengthModifier":0,"Dexterity":10,"DexterityModifier":0,"Constitution":10,"ConstitutionModifier":0,"Intelligence":10,"IntelligenceModifier":0,"Wisdom":10,"WisdomModifier":0,"Charisma":10,"CharismaModifier":0,"Initiative":0},"Actions":[{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Multiattack","Description":"The hobgoblin makes two greatsword attacks.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Greatsword","Description":"Melee Weapon Attack: +4 to hit, single target","Damage":"2d6 + 2","Range":0,"DamageType":2,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Javelin","Description":"Melee or Ranged Weapon Attack: +4 to hit, 5ft melee or disadvantage after 30ft, single target.","Damage":"1d6 + 2","Range":0,"DamageType":3,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Leadership","Description":"For 1 minute, the hobgoblin can utter a special command or warning whenever a nonhostile creature that it can see within 30 feet of it makes an attack roll or a saving throw. The creature can add a d4 to its roll provided it can hear and understand the hobgoblin. A creature can benefit from only one Leadership die at a time. This effect ends if the hobgoblin is incapacitated.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}}],"Ablity":{"Title":"Martial Advantage","Description":"Once per turn, the hobgoblin can deal an extra 10 (3d6) damage to a creature it hits with a weapon attack if that creature is within 5 feet of an ally of the hobgoblin that isn’t incapacitated."},"Alignment":4},{"Name":"Hobgoblin Iron Shadow","Level":1,"Race":"Human","Description":"Darkvision 60 ft., Passive Perception 12, Health: 32 + 5d8 + 10","MaxHealth":10,"Speed":30,"ArmorClass":10,"Language":"Common, Goblin","Stats":{"Strength":10,"StrengthModifier":0,"Dexterity":10,"DexterityModifier":0,"Constitution":10,"ConstitutionModifier":0,"Intelligence":10,"IntelligenceModifier":0,"Wisdom":10,"WisdomModifier":0,"Charisma":10,"CharismaModifier":0,"Initiative":0},"Actions":[{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Minor Illusion","Description":"You create a sound or an image of an object within range that lasts for the duration. The illusion also ends if you dismiss it as an action or cast this spell again.\nIf you create a sound, its volume can range from a whisper to a scream. It can be your voice, someone else's voice, a lion's roar, a beating of drums, or any other sound you choose. The sound continues unabated throughout the duration, or you can make discrete sounds at different times before the spell ends.\nIf you create an image of an object--such as a chair, muddy footprints, or a small chest--it must be no larger than a 5-foot cube. The image can't create sound, light, smell, or any other sensory effect. Physical interaction with the image reveals it to be an illusion, because things can pass through it.\nIf a creature uses its action to examine the sound or image, the creature can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the illusion becomes faint to the creature","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Prestigitation","Description":"This spell is a minor magical trick that novice spellcasters use for practice. You create one of the following magical effects within range:\n    You create an instantaneous, harmless sensory effect, such as a shower of sparks, a puff of wind, faint musical notes, or an odd odor.\n    You instantaneously light or snuff out a candle, a torch, or a small campfire.\n    You instantaneously clean or soil an object no larger than 1 cubic foot.\n    You chill, warm, or flavor up to 1 cubic foot of nonliving material for 1 hour.\n    You make a color, a small mark, or a symbol appear on an object or a surface for 1 hour.\n    You create a nonmagical trinket or an illusory image that can fit in your hand and that lasts until the end of your next turn.\nIf you cast this spell multiple times, you can have up to three of its non-instantaneous effects active at a time, and you can dismiss such an effect as an action.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"True Strike","Description":"You point a finger at a target in range. Your magic grants you a brief insight into the target's defenses. On your next turn, you gain advantage on your first attack roll against the target, provided that this spell hasn't ended.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Charm Person","Description":"You attempt to charm a humanoid you can see within range. It must make a Wisdom saving throw, and does so with advantage if you or your companions are fighting it. If it fails the saving throw, it is charmed by you until the spell ends or until you or your companions do anything harmful to it. The charmed creature regards you as a friendly acquaintance. When the spell ends, the creature knows it was charmed by you.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":4,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Disguise Self","Description":"You make yourself--including your clothing, armor, weapons, and other belongings on your person--look different until the spell ends or until you use your action to dismiss it. You can seem 1 foot shorter or taller and can appear thin, fat, or in between. You can't change your body type, so you must adopt a form that has the same basic arrangement of limbs. Otherwise, the extent of the illusion is up to you.\nThe changes wrought by this spell fail to hold up to physical inspection. For example, if you use this spell to add a hat to your outfit, objects pass through the hat, and anyone who touches it would feel nothing or would feel your head and hair. If you use this spell to appear thinner than you are, the hand of someone who reaches out to touch you would bump into you while it was seemingly still in midair.\nTo discern that you are disguised, a creature can use its action to inspect your appearance and must succeed on an Intelligence (Investigation) check against your spell save DC.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":5,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Expeditious","Description":"Bonus Action: This spell allows you to move at an incredible pace. When you cast this spell, and then as a bonus action on each of your turns until the spell ends, you can take the Dash action.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Retreat","Description":"Bonus Action: This spell allows you to move at an incredible pace. When you cast this spell, and then as a bonus action on each of your turns until the spell ends, you can take the Dash action.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":false,"CharacterAttack":{"Name":"Silent Image","Description":"You create the image of an object, a creature, or some other visible phenomenon that is no larger than a 15-foot cube. The image appears at a spot within range and lasts for the duration. The image is purely visual; it isn't accompanied by sound, smell, or other sensory effects.\n\nYou can use your action to cause the image to move to any spot within range. As the image changes location, you can alter its appearance so that its movements appear natural for the image. For example, if you create an image of a creature and move it, you can alter the image so that it appears to be walking.\nPhysical interaction with the image reveals it to be an illusion, because things can pass through it. A creature that uses its action to examine the image can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the creature can see through the image.","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Multiattack","Description":"The hobgoblin makes four attacks, each of which can be an unarmed strike or a dart attack. It can also use Shadow Jaunt once, either before or after one of the attacks","Damage":"N/A","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Unarmed Strike","Description":"+5 to hit single target. ","Damage":"1d4 + 3","Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Dart","Description":"+5 to hit, disadvantaged after 20ft , single target","Damage":"1d4 + 3","Range":0,"DamageType":3,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}},{"IsWeaponAttack":true,"CharacterAttack":{"Name":"Shadow Jaunt","Description":" The hobgoblin magically teleports, along with any equipment it is wearing or carrying, up to 30 feet to an unoccupied space it can see. Both the space it is leaving and its destination must be in dim light or darkness.","Damage":null,"Range":0,"DamageType":0,"SavingThrow":0,"ThrowType":0,"SpellDamageType":0}}],"Ablity":{"Title":"Spellcasting","Description":"The hobgoblin is a 2nd-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 12, +4 to hit with spell attacks)."},"Alignment":2}]
+[
+  {
+    "Name": "Hobgoblin",
+    "Level": 1,
+    "Race": "Hobgoblin",
+    "Description": "Darkvision 60ft, passive perception 10, health can range from 11-11(2D8+2)",
+    "MaxHealth": 29,
+    "Speed": 30,
+    "ArmorClass": 18,
+    "Language": "Common, Goblin",
+    "Stats": {
+      "Strength": 13,
+      "StrengthModifier": 0,
+      "Dexterity": 12,
+      "DexterityModifier": 0,
+      "Constitution": 12,
+      "ConstitutionModifier": 0,
+      "Intelligence": 10,
+      "IntelligenceModifier": 0,
+      "Wisdom": 10,
+      "WisdomModifier": 0,
+      "Charisma": 9,
+      "CharismaModifier": 0,
+      "Initiative": 0
+    },
+    "Actions": [
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Longsword (2 hand)",
+          "Description": "+3 to hit, single target",
+          "Damage": "1D10+1",
+          "Range": 5,
+          "DamageType": 1,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Longsword (1 hand)",
+          "Description": "+3 to hit, single target",
+          "Damage": "1D8+1",
+          "Range": 5,
+          "DamageType": 1,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Longbow",
+          "Description": "+3 to hit, disadvantaged past 150ft, single target",
+          "Damage": "1D8+1",
+          "Range": 600,
+          "DamageType": 3,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      }
+    ],
+    "Ablity": {
+      "Title": "Martial Advantage",
+      "Description": "Once per turn, the hobgoblin can deal an extra 7 (2d6) damage to a creature it hits with a weapon attack if that creature is within 5 ft. of an ally of the hobgoblin that isn't incapacitated."
+    },
+    "Alignment": 2
+  },
+  {
+    "Name": "Hobgoblin Captain",
+    "Level": 3,
+    "Race": "Hobgoblin",
+    "Description": "Minimum 33 HP (3D10+12)",
+    "MaxHealth": 99,
+    "Speed": 30,
+    "ArmorClass": 17,
+    "Language": "Common, Goblin",
+    "Stats": {
+      "Strength": 15,
+      "StrengthModifier": 0,
+      "Dexterity": 14,
+      "DexterityModifier": 0,
+      "Constitution": 14,
+      "ConstitutionModifier": 0,
+      "Intelligence": 12,
+      "IntelligenceModifier": 0,
+      "Wisdom": 10,
+      "WisdomModifier": 0,
+      "Charisma": 13,
+      "CharismaModifier": 0,
+      "Initiative": 0
+    },
+    "Actions": [
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Multiattack",
+          "Description": "The hobgoblin makes two greatsword attacks.",
+          "Damage": "N/A",
+          "Range": 0,
+          "DamageType": 0,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Greatsword",
+          "Description": "Melee Weapon Attack: +4 to hit, single target",
+          "Damage": "2d6 + 2",
+          "Range": 5,
+          "DamageType": 2,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Javelin",
+          "Description": "Melee or Ranged Weapon Attack: +4 to hit, 5ft melee or disadvantage after 30ft, single target.",
+          "Damage": "1d6 + 2",
+          "Range": 120,
+          "DamageType": 3,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": false,
+        "CharacterAttack": {
+          "Name": "Leadership",
+          "Description": "For 1 minute, the hobgoblin can utter a special command or warning whenever a nonhostile creature that it can see within 30 feet of it makes an attack roll or a saving throw. The creature can add a d4 to its roll provided it can hear and understand the hobgoblin. A creature can benefit from only one Leadership die at a time. This effect ends if the hobgoblin is incapacitated.",
+          "Damage": "N/A",
+          "Range": 30,
+          "DamageType": 0,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      }
+    ],
+    "Ablity": {
+      "Title": "Martial Advantage",
+      "Description": "Once per turn, the hobgoblin can deal an extra 10 (3d6) damage to a creature it hits with a weapon attack if that creature is within 5 feet of an ally of the hobgoblin that isn’t incapacitated."
+    },
+    "Alignment": 2
+  }  
+]

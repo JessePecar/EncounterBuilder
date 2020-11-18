@@ -1,0 +1,46 @@
+﻿<div class="col-@ColumnWidth form-group ">
+    <div><label class="text-center">@Title</label></div>
+    @if (IsEditable)
+    {
+        <div><input class="@((ColumnWidth > 2) ? "":"text-center") form-control @((string.IsNullOrWhiteSpace(InputText) ? "is-invalid" : "is-valid"))" @bind="@InputText" disabled="@IsTextBlockLocked" /></div>
+    }
+    else
+    {
+        <div><label class="text-center">@InputText</label></div>
+    }
+</div>
+@code {
+        [Parameter]
+        public bool IsEditable { get; set; }
+
+        [Parameter]
+        public bool IsTextBlockLocked { get; set; }
+
+        [Parameter]
+        public string Title { get; set; }
+
+    private string _inputText { get; set; } = null;
+    [Parameter]
+    public string InputText
+    {
+        get => _inputText;
+        set
+        {
+            bool initInput = _inputText == null;
+            if(_inputText != value)
+            {
+                _inputText = value;
+                if (initInput)
+                {
+                    OnTextChanged.InvokeAsync(InputText);
+                }
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> OnTextChanged { get; set; }
+
+    [Parameter]
+    public int ColumnWidth { get; set; } = 1;
+}

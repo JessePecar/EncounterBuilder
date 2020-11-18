@@ -1,53 +1,40 @@
-﻿
-<div class="row">
-    <div class="col-1"></div>
-    <div class="col-4 form-group">
-        <div><label class="text-center">Character Name</label></div>
-        @if (IsNameEditable)
-        {
-            <input type="search" class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Name) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Name" placeholder="Enter Name" disabled="@IsCharacterLocked" />
-        }
-        else
-        {
-            <div><label class="text-center">@CurrentCharacter.Name</label></div>
-        }
-    </div>
-    <div class="col-1 form-group">
-        <div><label class="text-center">@nameof(CurrentCharacter.Stats.Strength)</label></div>
-        <NumberInput Value="@CurrentCharacter.Stats.Strength" IsCharacterLocked="@IsCharacterLocked" />
-    </div>
-    <div class="col-1 form-group ">
-        <div><label class="text-center">@nameof(CurrentCharacter.Stats.Dexterity)</label></div>
-        <NumberInput Value="@CurrentCharacter.Stats.Dexterity" IsCharacterLocked="@IsCharacterLocked" />
-    </div>
-    <div class="col-1 form-group ">
-        <div><label class="text-center">@nameof(CurrentCharacter.Stats.Constitution)</label></div>
-        <NumberInput Value="@CurrentCharacter.Stats.Constitution" IsCharacterLocked="@IsCharacterLocked" />
-    </div>
-    <div class="col-1 form-group ">
-        <div><label class="text-center">@nameof(CurrentCharacter.Stats.Intelligence)</label></div>
-        <NumberInput Value="@CurrentCharacter.Stats.Intelligence" IsCharacterLocked="@IsCharacterLocked" />
-    </div>
-    <div class="col-1 form-group ">
-        <div><label class="text-center">@nameof(CurrentCharacter.Stats.Wisdom)</label></div>
-        <NumberInput Value="@CurrentCharacter.Stats.Wisdom" IsCharacterLocked="@IsCharacterLocked" />
-    </div>
-    <div class="col-1 form-group ">
-        <div><label class="text-center">@nameof(CurrentCharacter.Stats.Charisma)</label></div>
-        <NumberInput Value="@CurrentCharacter.Stats.Charisma" IsCharacterLocked="@IsCharacterLocked"></NumberInput>
-    </div>
-    <div class="col-1 form-group ">
-        <div><label class="text-center">Minimum Level</label></div>
-        <NumberInput Value="@CurrentCharacter.Level" IsCharacterLocked="@IsCharacterLocked" />
-    </div>
-
+﻿<div class="col-1 form-group">
+    <div><label class="text-center">@nameof(CharacterStats.Strength)</label></div>
+    <NumberInput Value="@CharacterStats.Strength" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Strength = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Strength), CharacterStats.Strength)); }" />
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CharacterStats.Dexterity)</label></div>
+    <NumberInput Value="@CharacterStats.Dexterity" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) => { CharacterStats.Dexterity = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Dexterity), CharacterStats.Dexterity)); }" />
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CharacterStats.Constitution)</label></div>
+    <NumberInput Value="@CharacterStats.Constitution" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Constitution = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Constitution), CharacterStats.Constitution)); }" />
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CharacterStats.Intelligence)</label></div>
+    <NumberInput Value="@CharacterStats.Intelligence" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Intelligence = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Intelligence), CharacterStats.Intelligence)); }" />
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CharacterStats.Wisdom)</label></div>
+    <NumberInput Value="@CharacterStats.Wisdom" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Wisdom = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Wisdom), CharacterStats.Wisdom)); }" />
+</div>
+<div class="col-1 form-group ">
+    <div><label class="text-center">@nameof(CharacterStats.Charisma)</label></div>
+    <NumberInput Value="@CharacterStats.Charisma" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Charisma = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Charisma), CharacterStats.Charisma)); }"></NumberInput>
 </div>
 
 @code {
     [Parameter]
-    public Models.Character.Character CurrentCharacter { get; set; }
+    public Models.Character.CharacterStats CharacterStats { get; set; }
+
+    [Parameter]
+    public EventCallback<KeyValuePair<string, int>> StatUpdate { get; set; }
+
     [Parameter]
     public bool IsCharacterLocked { get; set; }
-    [Parameter]
-    public bool IsNameEditable { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 }

@@ -1,7 +1,9 @@
 using EncounterBuilder.BusinessRules.Clients;
 using EncounterBuilder.BusinessRules.Contracts;
+using EncounterBuilder.DAC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +15,11 @@ namespace EncounterBuilder
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (EncounterBuilderDbContext db = new EncounterBuilderDbContext(new DbContextOptions<EncounterBuilderDbContext>()))
+            {
+                //db.Database.EnsureCreated();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -22,10 +29,11 @@ namespace EncounterBuilder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ICharacterRepository, CharacterData>();
-            
-            services.AddRazorPages().AddJsonOptions(options =>
+
+            services.AddRazorPages();
+            services.AddEntityFrameworkSqlite().AddDbContext<EncounterBuilderDbContext>(options =>
             {
-                options.JsonSerializerOptions.MaxDepth = 2;
+                options.UseSqlite("Data Source = EncounterBuilder.db", b => b.MigrationsAssembly("EncounterBuilder.DAC"));
             });
             services.AddServerSideBlazor();
 
