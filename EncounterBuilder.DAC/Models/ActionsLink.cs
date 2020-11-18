@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EncounterBuilder.DAC.Models
 {
@@ -9,17 +8,18 @@ namespace EncounterBuilder.DAC.Models
     /// </summary>
     public class ActionsLink
     {
+        public ActionsLink()
+        {
+
+        }
         /// <summary>
         /// 
         /// </summary>
-        public int Id { get; set; }
-        /// <summary>
-        /// Relates to the Character
-        /// </summary>
-        public int CharacterId { get; set; }
-        /// <summary>
-        /// Unique identifier of the action
-        /// </summary>
-        public int ActionId { get; set; }
+        public long Id { get; set; } 
+        [Column("CharacterId")]
+        public long CharacterId { get; set; }
+        public long CharacterActionsId { get; set; }
+        public CharacterActions Action { get; set; }
+        public Character Character { get; set; }
     }
 }

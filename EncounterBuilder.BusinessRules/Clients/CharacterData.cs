@@ -1,4 +1,6 @@
-﻿using EncounterBuilder.BusinessRules.Contracts;
+﻿using AutoMapper;
+using EncounterBuilder.BusinessRules.Contracts;
+using EncounterBuilder.DAC;
 using EncounterBuilder.Models.Character;
 using EncounterBuilder.Models.Saves;
 using Newtonsoft.Json;
@@ -12,35 +14,43 @@ namespace EncounterBuilder.BusinessRules.Clients
     public class CharacterData : ICharacterRepository
     {
         private readonly Dictionary<JsonTypes, string> _jsonDirectory = new Dictionary<JsonTypes, string>();
-
-        public CharacterData()
+        private readonly DAC.Contract.ICharacterRepository _repository;
+        private readonly IMapper _mapper;
+        public CharacterData(DAC.Contract.ICharacterRepository repository, IMapper mapper)
         {
             _jsonDirectory.Add(JsonTypes.Character, Path.Combine(Directory.GetCurrentDirectory(), @"..\EncounterBuilder.BusinessRules\CharacterJson\createdCharacters.json"));
             _jsonDirectory.Add(JsonTypes.Spell, Path.Combine(Directory.GetCurrentDirectory(), @"..\EncounterBuilder.BusinessRules\CharacterJson\createdSpells.json"));
             _jsonDirectory.Add(JsonTypes.Weapon, Path.Combine(Directory.GetCurrentDirectory(), @"..\EncounterBuilder.BusinessRules\CharacterJson\createdWeapons.json"));
 
-            VerifyFiles();
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
         }
 
-        #region Write
+        #region Create
 
         public async Task AddToCharacterList(Character newCharacter)
         {
-            List<Character> currentCharacters = await ResetJson(JsonTypes.Character, newCharacter);
-            KeyValuePair<JsonTypes, string> characterSave = new KeyValuePair<JsonTypes, string>(JsonTypes.Character, JsonConvert.SerializeObject(currentCharacters));
-
-            await SaveToJson(characterSave);
+            try
+            {
+                await _repository.CreateNewCharacter(_mapper.Map<DAC.Models.Character>(newCharacter));
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task UpdateCurrentCharacter(Character updCharacter)
         {
-            List<Character> currentCharacters = await ResetJson(JsonTypes.Character);
-            currentCharacters.RemoveAll(ch => ch.Name == updCharacter.Name);
-            currentCharacters.Add(updCharacter);
-
-            KeyValuePair<JsonTypes, string> characterSave = new KeyValuePair<JsonTypes, string>(JsonTypes.Character, JsonConvert.SerializeObject(currentCharacters));
-
-            await SaveToJson(characterSave);
+            try
+            {
+                await _repository.UpdateCharacter(_mapper.Map<DAC.Models.Character>(updCharacter));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion
@@ -51,14 +61,9 @@ namespace EncounterBuilder.BusinessRules.Clients
         {
             try
             {
-                string characters = string.Empty;
-                using (StreamReader reader = new StreamReader(_jsonDirectory[JsonTypes.Character]))
-                {
-                    characters = reader.ReadToEnd();
-                }
+                List<Character> characters = _mapper.Map<List<DAC.Models.Character>, List<Character>>(await _repository.GetCharacters());
 
-
-                return JsonConvert.DeserializeObject<List<Character>>(characters);
+                return characters;
             }
             catch (Exception ex)
             {
@@ -72,56 +77,17 @@ namespace EncounterBuilder.BusinessRules.Clients
 
         public async Task DeleteCharacter(Character deletedCharacter)
         {
-            List<Character> currentCharacters = await ResetJson(JsonTypes.Character);
-            currentCharacters.RemoveAll(ch => ch.Name == deletedCharacter.Name);
-
-            KeyValuePair<JsonTypes, string> characterSave = new KeyValuePair<JsonTypes, string>(JsonTypes.Character, JsonConvert.SerializeObject(currentCharacters));
-
-            await SaveToJson(characterSave);
+            try
+            {
+                _repository.DeleteCharacter(_mapper.Map<DAC.Models.Character>(deletedCharacter))
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
 
-        #region helper methods
-
-        private void VerifyFiles()
-        {
-            foreach (KeyValuePair<JsonTypes, string> jsonFile in _jsonDirectory)
-            {
-                if (!File.Exists(jsonFile.Value)) File.Create(jsonFile.Value);
-            }
-        }
-
-        private async Task SaveToJson(KeyValuePair<JsonTypes, string> jsonFile)
-        {
-            using (StreamWriter write = new StreamWriter(_jsonDirectory.GetValueOrDefault(jsonFile.Key)))
-            {
-                await write.WriteAsync(jsonFile.Value);
-            }
-        }
-
-        private async Task<List<Character>> ResetJson(JsonTypes fileKey, Character newCharacter = null)
-        {
-            string characters = string.Empty;
-            using (StreamReader reader = new StreamReader(_jsonDirectory.GetValueOrDefault(fileKey)))
-            {
-                characters = reader.ReadToEnd();
-            }
-
-            if (File.Exists(_jsonDirectory[fileKey]))
-            {
-                File.Delete(_jsonDirectory[fileKey]);
-            }
-            using (FileStream fs = File.Create(_jsonDirectory[fileKey]))
-            {
-            }
-
-            List<Character> savedCharacters = JsonConvert.DeserializeObject<List<Character>>(characters);
-            if (newCharacter != null)
-            {
-                savedCharacters?.Add(newCharacter);
-            }
-            return savedCharacters;
-        }
         #endregion
     }
 }

@@ -26,7 +26,7 @@
             <div><label class="text-center">@nameof(@ChangedCharacter.Description)</label></div>
             <textarea class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Description) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="2" />
         </div>
-        <ToggledEditField InputText="ChangedCharacter.MaxHealth" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.MaxHealth)" OnTextChanged="(mh) => ChangedCharacter.MaxHealth = mh"></ToggledEditField>
+        <ToggledEditField InputText="ChangedCharacter.MaxHealth" MaxValue="1000" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.MaxHealth)" OnTextChanged="(mh) => ChangedCharacter.MaxHealth = mh"></ToggledEditField>
         <ToggledEditField InputText="ChangedCharacter.ArmorClass" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.ArmorClass)" OnTextChanged="(ac) => ChangedCharacter.ArmorClass = ac"></ToggledEditField>
         <ToggledEditField InputText="ChangedCharacter.Speed" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.Speed)" OnTextChanged="(s) => ChangedCharacter.Speed = s"></ToggledEditField>
         <AlignmentToggle InputAlignment="ChangedCharacter.Alignment" IsEditable="true" IsAlignmentLocked="IsCharacterLocked" Title="Alignment" OnAlignmentChanged="(al) => ChangedCharacter.Alignment = al"></AlignmentToggle>
@@ -109,11 +109,11 @@
             <div class="row">
                 <div class="col-4 form-group">
                     <div><label class="text-center">Ability Name</label></div>
-                    <input type="search" class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Ablity?.Title) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Ablity.Title" placeholder="Enter Name" disabled="@IsCharacterLocked" />
+                    <input type="search" class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Ability?.Title) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Ability.Title" placeholder="Enter Name" disabled="@IsCharacterLocked" />
                 </div>
                 <div class="col-4 form-group">
                     <div><label class="text-center">Ability Description</label></div>
-                    <textarea class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Ablity?.Description) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Ablity.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="1" />
+                    <textarea class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Ability?.Description) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Ability.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="1" />
                 </div>
             </div>
             <hr />
@@ -158,8 +158,8 @@
 
     private bool CanSubmit => string.IsNullOrWhiteSpace(ChangedCharacter.Name)
         || string.IsNullOrWhiteSpace(ChangedCharacter.Description)
-        || (string.IsNullOrWhiteSpace(ChangedCharacter.Ablity.Description) && IsAbilityAdded)
-        || (string.IsNullOrWhiteSpace(ChangedCharacter.Ablity.Title) && IsAbilityAdded)
+        || (string.IsNullOrWhiteSpace(ChangedCharacter?.Ability.Description) && IsAbilityAdded)
+        || (string.IsNullOrWhiteSpace(ChangedCharacter?.Ability.Title) && IsAbilityAdded)
         || string.IsNullOrWhiteSpace(ChangedCharacter.Description)
         || ChangedCharacter.Actions.Any(Action => string.IsNullOrWhiteSpace(Action.CharacterAttack.Description) || string.IsNullOrWhiteSpace(Action.CharacterAttack.Name));
 
@@ -180,7 +180,7 @@
             };
         }
         ChangedCharacter = CurrentCharacter;
-        IsAbilityAdded = !string.IsNullOrWhiteSpace(ChangedCharacter.Ablity?.Title);
+        IsAbilityAdded = !string.IsNullOrWhiteSpace(ChangedCharacter.Ability?.Title);
         StateHasChanged();
     }
 

@@ -7,7 +7,11 @@ namespace EncounterBuilder.DAC.Models
 {
     public class Character
     {
-        public int CharacterId { get; set; }
+        public Character()
+        {
+            Actions = new HashSet<ActionsLink>();
+        }
+        public long CharacterId { get; set; }
         /// <summary>
         /// Name of the character
         /// </summary>
@@ -43,18 +47,15 @@ namespace EncounterBuilder.DAC.Models
         /// <summary>
         /// The statistics of the character
         /// </summary>
-        [NotMapped] 
         public CharacterStats Stats { get; set; }
         /// <summary>
         /// List of actions the character has
         /// </summary>
-        [NotMapped]
-        public List<CharacterActions> Actions { get; set; }
+        public ICollection<ActionsLink> Actions { get; set; }
         /// <summary>
         /// The character's special ablility
         /// </summary>
-        [NotMapped]
-        public CharacterAbility Ablity { get; set; }
+        public CharacterAbility Ability { get; set; }
         /// <summary>
         /// Character's alignment (ex: Lawful Good)
         /// </summary>

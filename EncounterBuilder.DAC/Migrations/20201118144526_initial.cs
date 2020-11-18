@@ -46,6 +46,7 @@ namespace EncounterBuilder.DAC.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -81,6 +82,7 @@ namespace EncounterBuilder.DAC.Migrations
                 {
                     CharacterStatsId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false),
                     Strength = table.Column<int>(type: "INTEGER", nullable: false),
                     StrengthModifier = table.Column<int>(type: "INTEGER", nullable: false),
                     Dexterity = table.Column<int>(type: "INTEGER", nullable: false),

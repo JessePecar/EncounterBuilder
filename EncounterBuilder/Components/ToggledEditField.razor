@@ -2,7 +2,7 @@
     <div><label class="text-center">@Title</label></div>
     @if (IsEditable)
     {
-        <NumberInput Value="InputText" IsCharacterLocked="@IsTextBlockLocked" Max="100" ValueCallback="(input) => { OnTextChanged.InvokeAsync(input); }" />
+        <NumberInput Value="InputText" IsCharacterLocked="@IsTextBlockLocked" Max="@MaxValue" ValueCallback="(input) => { OnTextChanged.InvokeAsync(input); }" />
     }
     else
     {
@@ -21,6 +21,9 @@
 
     [Parameter]
     public int InputText { get; set; }
+
+    [Parameter]
+    public int MaxValue { get; set; } = 100;
 
     [Parameter]
     public EventCallback<int> OnTextChanged { get; set; }

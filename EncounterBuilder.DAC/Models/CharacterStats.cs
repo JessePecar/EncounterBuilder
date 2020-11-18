@@ -7,6 +7,10 @@
         /// </summary>
         public int CharacterStatsId { get; set; }
         /// <summary>
+        /// Id of the character the stats belong to
+        /// </summary>
+        public long CharacterId { get; set; }
+        /// <summary>
         /// Character's Strength
         /// </summary>
         public int Strength { get; set; }
@@ -55,5 +59,6 @@
         /// </summary>
         public int CharismaModifier { get; set; }
         
+        public Character Character { get; set; }
     }
 }

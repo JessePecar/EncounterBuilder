@@ -9,7 +9,11 @@ namespace EncounterBuilder.DAC.Models
         /// <summary>
         /// Character Ability primary Key
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
+        /// <summary>
+        /// Id of the character the stats belong to
+        /// </summary>
+        public long CharacterId { get; set; }
         /// <summary>
         /// Title of the ablility
         /// </summary>
@@ -18,5 +22,7 @@ namespace EncounterBuilder.DAC.Models
         /// Description of the abililty
         /// </summary>
         public string Description { get; set; }
+
+        public Character Character { get; set; }
     }
 }

@@ -112,6 +112,9 @@ namespace EncounterBuilder.DAC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -146,6 +149,9 @@ namespace EncounterBuilder.DAC.Migrations
                 {
                     b.Property<int>("CharacterStatsId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CharacterId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Charisma")

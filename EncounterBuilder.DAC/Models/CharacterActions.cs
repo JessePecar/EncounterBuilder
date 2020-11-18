@@ -1,23 +1,21 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Text;
-using EncounterBuilder.Models.Weapons;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EncounterBuilder.DAC.Models 
 { 
     public class CharacterActions
     {
-        /// <summary>
-        /// Unique identifier of the action
-        /// </summary>
-        public int CharacterActionsId { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsWeaponAttack { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Attack CharacterAttack { get; set; }
+        public CharacterActions()
+        {
+            ActionLinks = new HashSet<ActionsLink>();
+        }
+        public long CharacterActionsId { get; set; }
+        public long IsWeaponAttack { get; set; }
+        [Column("CharacterAttackAttackId")]
+        public long? CharacterAttackId { get; set; }
+
+        public virtual Attack CharacterAttack { get; set; }
+        public virtual ICollection<ActionsLink> ActionLinks { get; set; }
     }
 }

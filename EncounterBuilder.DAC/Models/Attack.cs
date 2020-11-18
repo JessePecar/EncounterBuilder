@@ -1,12 +1,18 @@
 ﻿
+using System.Collections.Generic;
+
 namespace EncounterBuilder.DAC.Models
 {
     public class Attack
     {
+        public Attack()
+        {
+            CharacterActions = new HashSet<CharacterActions>();
+        }
         /// <summary>
         /// Id of the Attack
         /// </summary>
-        public int AttackId { get; set; }
+        public long AttackId { get; set; }
         /// <summary>
         /// Name of Attack
         /// </summary>
@@ -40,5 +46,7 @@ namespace EncounterBuilder.DAC.Models
         /// The damage profile of the spell
         /// </summary>
         public SpellType SpellDamageType { get; set; }
+
+        public virtual ICollection<CharacterActions> CharacterActions { get; set; }
     }
 }

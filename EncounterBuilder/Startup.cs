@@ -1,5 +1,7 @@
+using AutoMapper;
 using EncounterBuilder.BusinessRules.Clients;
 using EncounterBuilder.BusinessRules.Contracts;
+using EncounterBuilder.BusinessRules.Profiles;
 using EncounterBuilder.DAC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,10 +18,6 @@ namespace EncounterBuilder
         {
             Configuration = configuration;
 
-            using (EncounterBuilderDbContext db = new EncounterBuilderDbContext(new DbContextOptions<EncounterBuilderDbContext>()))
-            {
-                //db.Database.EnsureCreated();
-            }
         }
 
         public IConfiguration Configuration { get; }
@@ -28,13 +26,21 @@ namespace EncounterBuilder
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ICharacterRepository, CharacterData>();
-
-            services.AddRazorPages();
             services.AddEntityFrameworkSqlite().AddDbContext<EncounterBuilderDbContext>(options =>
             {
                 options.UseSqlite("Data Source = EncounterBuilder.db", b => b.MigrationsAssembly("EncounterBuilder.DAC"));
             });
+
+            services.AddScoped<ICharacterRepository, CharacterData>();
+            services.AddScoped<DAC.Contract.ICharacterRepository, DAC.Client.CharacterData>();
+
+            services.AddRazorPages();
+            
+            services.AddSingleton(new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new CharacterProfiles());
+
+            }).CreateMapper());
             services.AddServerSideBlazor();
 
         }
@@ -63,6 +69,8 @@ namespace EncounterBuilder
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+           
         }
     }
 }

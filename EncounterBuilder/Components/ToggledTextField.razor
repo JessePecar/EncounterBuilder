@@ -2,7 +2,7 @@
     <div><label class="text-center">@Title</label></div>
     @if (IsEditable)
     {
-        <div><input class="@((ColumnWidth > 2) ? "":"text-center") form-control @((string.IsNullOrWhiteSpace(InputText) ? "is-invalid" : "is-valid"))" @bind="@InputText" disabled="@IsTextBlockLocked" /></div>
+        <div><input class="@((ColumnWidth > 2) ? "":"text-center") form-control @((string.IsNullOrWhiteSpace(InputText) ? "is-invalid" : "is-valid"))" @bind="@InputText" @onfocusout="(e) => OnTextChanged.InvokeAsync(InputText)" disabled="@IsTextBlockLocked" /></div>
     }
     else
     {
@@ -26,14 +26,9 @@
         get => _inputText;
         set
         {
-            bool initInput = _inputText == null;
             if(_inputText != value)
             {
                 _inputText = value;
-                if (initInput)
-                {
-                    OnTextChanged.InvokeAsync(InputText);
-                }
             }
         }
     }

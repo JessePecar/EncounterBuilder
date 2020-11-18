@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EncounterBuilder.DAC.Migrations
 {
     [DbContext(typeof(EncounterBuilderDbContext))]
-    [Migration("20201118143311_initial")]
+    [Migration("20201118144526_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,6 +114,9 @@ namespace EncounterBuilder.DAC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -148,6 +151,9 @@ namespace EncounterBuilder.DAC.Migrations
                 {
                     b.Property<int>("CharacterStatsId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CharacterId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Charisma")

@@ -57,7 +57,7 @@ namespace EncounterBuilder.Models.Character
         /// <summary>
         /// The character's special ablility
         /// </summary>
-        public CharacterAbility Ablity { get; set; } = new CharacterAbility();
+        public CharacterAbility Ability { get; set; } = new CharacterAbility();
         /// <summary>
         /// Character's alignment (ex: Lawful Good)
         /// </summary>
