@@ -1,26 +1,46 @@
 ﻿@inject ICharacterRepository _characterData
 @inject IJSRuntime JsRuntime;
+@inject NavigationManager NavManager;
 
 <div class="box-shadow border pb-3 shadow pr-4 bg-lightish" style="max-height: inherit;">
-    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "d-none" : "" )" value="@EditButtonText" @onclick="() => ToggleEditable()" />
-    <input type="button" class="btn btn-dark m-2 @(IsNewCharacter ? "" : "d-none" )" value="Submit" @onclick="() => SubmitCharacter()" disabled="@CanSubmit" />
-    <input type="button" class="btn btn-light text-dark m-2" value="@(IsSimpleView ? "Expand" : "Collapse")" @onclick="() => ToggleCollapse()" />
-    <BasicCharacter CurrentCharacter="CurrentCharacter" IsCharacterLocked="IsCharacterLocked" IsNameEditable="true"></BasicCharacter>
+    <div class="row p-3">
+        <input type="button" class="btn btn-dark col-1 m-2 @(IsNewCharacter ? "d-none" : "" )" value="@EditButtonText" @onclick="() => ToggleEditable()" />
+        <input type="button" class="btn btn-dark col-1 m-2 @(IsNewCharacter ? "" : "d-none" )" value="Submit" @onclick="() => SubmitCharacter()" disabled="@CanSubmit" />
+        <input type="button" class="btn btn-light col-1 text-dark m-2" value="@(IsSimpleView ? "Expand" : "Collapse")" @onclick="() => ToggleCollapse()" />
+        <DeleteButton IsNotVisible="IsNewCharacter" OnButtonClick="() => OnCharacterDelete()"></DeleteButton>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <ToggledTextField ColumnWidth="4" InputText="@ChangedCharacter.Name" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.Name)" OnTextChanged="(name) => ChangedCharacter.Name = name"></ToggledTextField>
+        
+        <BasicCharacter CharacterStats="@ChangedCharacter.Stats" IsCharacterLocked="IsCharacterLocked" StatUpdate="OnStatChanged"></BasicCharacter>
+        
+        <div class="col-1 form-group ">
+            <div><label class="text-center">Minimum Level</label></div>
+            <NumberInput Value="@ChangedCharacter.Level" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) => ChangedCharacter.Level = val" />
+        </div>
+    </div>
     <div class="row">
         <div class="col-1"></div>
         <div class="col-4 form-group">
-            <div><label class="text-center">@nameof(@CurrentCharacter.Description)</label></div>
-            <textarea class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Description) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="2" />
+            <div><label class="text-center">@nameof(@ChangedCharacter.Description)</label></div>
+            <textarea class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Description) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="2" />
         </div>
-        <CharacterQuickInfo CurrentCharacter="CurrentCharacter" IsCharacterLocked="IsCharacterLocked" IsNameEditable="true"></CharacterQuickInfo>
+        <ToggledEditField InputText="ChangedCharacter.MaxHealth" MaxValue="1000" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.MaxHealth)" OnTextChanged="(mh) => ChangedCharacter.MaxHealth = mh"></ToggledEditField>
+        <ToggledEditField InputText="ChangedCharacter.ArmorClass" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.ArmorClass)" OnTextChanged="(ac) => ChangedCharacter.ArmorClass = ac"></ToggledEditField>
+        <ToggledEditField InputText="ChangedCharacter.Speed" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.Speed)" OnTextChanged="(s) => ChangedCharacter.Speed = s"></ToggledEditField>
+        <AlignmentToggle InputAlignment="ChangedCharacter.Alignment" IsEditable="true" IsAlignmentLocked="IsCharacterLocked" Title="Alignment" OnAlignmentChanged="(al) => ChangedCharacter.Alignment = al"></AlignmentToggle>
+        <ToggledTextField InputText="@ChangedCharacter.Race" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.Race)" OnTextChanged="(race) => ChangedCharacter.Race = race"></ToggledTextField>
+        <ToggledTextField ColumnWidth="2" InputText="@ChangedCharacter.Language" IsEditable="true" IsTextBlockLocked="IsCharacterLocked" Title="@nameof(ChangedCharacter.Language)" OnTextChanged="(lang) => ChangedCharacter.Language = lang"></ToggledTextField>
+
     </div>
     <hr />
     <div class="@(IsSimpleView ? "d-none" : "")">
         <div class="pl-2">
-            @foreach (Models.Character.CharacterActions action in CurrentCharacter.Actions)
+            @foreach (Models.Character.CharacterActions action in ChangedCharacter.Actions)
             {
 
-                <div class="row ">
+                <div class="row">
 
                     <div class="col-2 form-group">
                         <div><label class="text-center">Attack Name</label></div>
@@ -82,18 +102,18 @@
                 </div>
 
             }
-            <hr class="@(CurrentCharacter.Actions.Any() ? "": "d-none")" />
+            <hr class="@(ChangedCharacter.Actions.Any() ? "": "d-none")" />
         </div>
 
         <div class="pl-2 @(IsAbilityAdded ? "": "d-none")">
             <div class="row">
                 <div class="col-4 form-group">
                     <div><label class="text-center">Ability Name</label></div>
-                    <input type="search" class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Title) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Ablity.Title" placeholder="Enter Name" disabled="@IsCharacterLocked" />
+                    <input type="search" class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Ability?.Title) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Ability.Title" placeholder="Enter Name" disabled="@IsCharacterLocked" />
                 </div>
                 <div class="col-4 form-group">
                     <div><label class="text-center">Ability Description</label></div>
-                    <textarea class="form-control @((string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Description) ? "is-invalid" : "is-valid"))" @bind="@CurrentCharacter.Ablity.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="1" />
+                    <textarea class="form-control @((string.IsNullOrWhiteSpace(ChangedCharacter.Ability?.Description) ? "is-invalid" : "is-valid"))" @bind="@ChangedCharacter.Ability.Description" placeholder="Enter Description" disabled="@IsCharacterLocked" rows="1" />
                 </div>
             </div>
             <hr />
@@ -104,28 +124,44 @@
                 <button type="button" class="btn btn-dark col-btn @(IsAbilityAdded ? "d-none": "")" @onclick="() => IsAbilityAdded = !IsAbilityAdded" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Ability</button>
             </div>
             <div class="col-2">
-                <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = true, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Attack</button>
+                <button type="button" class="btn btn-dark col-btn" @onclick="() => ChangedCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = true, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Attack</button>
             </div>
             <div class="col-2">
-                <button type="button" class="btn btn-dark col-btn" @onclick="() => CurrentCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = false, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Spell</button>
+                <button type="button" class="btn btn-dark col-btn" @onclick="() => ChangedCharacter.Actions.Add(new Models.Character.CharacterActions() { IsWeaponAttack = false, CharacterAttack = new Models.Weapons.Attack() })" disabled="@IsCharacterLocked"><span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Spell</button>
             </div>
         </div>
     </div>
 </div>
 @code {
 
-    [Parameter]
-    public bool IsNewCharacter { get; set; }
+        [Parameter]
+        public bool IsNewCharacter { get; set; }
+
+        [Parameter]
+        public EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
+    private EncounterBuilder.Models.Character.Character _changedCharacter = new Models.Character.Character();
+    private EncounterBuilder.Models.Character.Character ChangedCharacter
+    {
+        get => _changedCharacter;
+        set
+        {
+            _changedCharacter = value;
+            StateHasChanged();
+        }
+    }
 
     [Parameter]
-    public EncounterBuilder.Models.Character.Character CurrentCharacter { get; set; }
+    public Action OnCharacterChange { get; set; }
 
-    private bool CanSubmit => string.IsNullOrWhiteSpace(CurrentCharacter.Name)
-        || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
-        || (string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Description) && IsAbilityAdded)
-        || (string.IsNullOrWhiteSpace(CurrentCharacter.Ablity.Title) && IsAbilityAdded)
-        || string.IsNullOrWhiteSpace(CurrentCharacter.Description)
-        || CurrentCharacter.Actions.Any(Action => string.IsNullOrWhiteSpace(Action.CharacterAttack.Description) || string.IsNullOrWhiteSpace(Action.CharacterAttack.Name));
+    [Parameter]
+    public bool IsNameEditable { get; set; } = true;
+
+    private bool CanSubmit => string.IsNullOrWhiteSpace(ChangedCharacter.Name)
+        || string.IsNullOrWhiteSpace(ChangedCharacter.Description)
+        || (string.IsNullOrWhiteSpace(ChangedCharacter?.Ability.Description) && IsAbilityAdded)
+        || (string.IsNullOrWhiteSpace(ChangedCharacter?.Ability.Title) && IsAbilityAdded)
+        || string.IsNullOrWhiteSpace(ChangedCharacter.Description)
+        || ChangedCharacter.Actions.Any(Action => string.IsNullOrWhiteSpace(Action.CharacterAttack.Description) || string.IsNullOrWhiteSpace(Action.CharacterAttack.Name));
 
     private bool IsCharacterLocked { get; set; }
     private string EditButtonText => IsCharacterLocked ? "Edit" : "Confirm";
@@ -136,12 +172,16 @@
     {
         base.OnInitialized();
         IsCharacterLocked = !IsNewCharacter;
-        if (CurrentCharacter == null)
+        if (CurrentCharacter == null || IsNewCharacter)
         {
-            CurrentCharacter = new Models.Character.Character();
+            CurrentCharacter = new Models.Character.Character()
+            {
+                Stats = EncounterBuilder.Models.Character.CharacterStats.Default
+            };
         }
-
-        IsAbilityAdded = !string.IsNullOrWhiteSpace(CurrentCharacter.Ablity?.Title);
+        ChangedCharacter = CurrentCharacter;
+        IsAbilityAdded = !string.IsNullOrWhiteSpace(ChangedCharacter.Ability?.Title);
+        StateHasChanged();
     }
 
 
@@ -151,27 +191,58 @@
         if (IsCharacterLocked)
         {
             SubmitCharacter();
+            OnCharacterChange.Invoke();
         }
     }
 
     private async Task SubmitCharacter()
     {
-        if (_characterData.GetAllCharacters().Result?.Any(ch => ch.Name == CurrentCharacter.Name) ?? false)
+        try
         {
-            bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Item exists, would you like to overwrite?");
-
-            if (confirmed)
+            if (_characterData.GetAllCharacters().Result?.Any(ch => ch.Name == ChangedCharacter.Name) ?? false)
             {
-                _characterData.UpdateCurrentCharacter(CurrentCharacter);
-            }
-            return;
-        }
+                bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Item exists, would you like to overwrite?");
 
-        await _characterData.AddToCharacterList(CurrentCharacter);
+                if (confirmed)
+                {
+                    _characterData.UpdateCurrentCharacter(ChangedCharacter);
+                }
+                return;
+            }
+
+            await _characterData.AddToCharacterList(ChangedCharacter);
+
+            NavManager.NavigateTo("CharacterList");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     private void ToggleCollapse()
     {
         IsSimpleView = !IsSimpleView;
+    }
+
+    private async Task OnCharacterDelete()
+    {
+        try
+        {
+            if (await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this character?"))
+            {
+                await _characterData.DeleteCharacter(ChangedCharacter);
+            }
+            OnCharacterChange.Invoke();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private void OnStatChanged(KeyValuePair<string, int> statChange)
+    {
+        CurrentCharacter.Stats.GetType().GetProperty(statChange.Key).SetValue(CurrentCharacter.Stats, statChange.Value);
     }
 }

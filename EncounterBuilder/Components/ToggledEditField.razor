@@ -1,0 +1,30 @@
+﻿<div class="col-1 form-group ">
+    <div><label class="text-center">@Title</label></div>
+    @if (IsEditable)
+    {
+        <NumberInput Value="InputText" IsCharacterLocked="@IsTextBlockLocked" Max="@MaxValue" ValueCallback="(input) => { OnTextChanged.InvokeAsync(input); }" />
+    }
+    else
+    {
+        <div><label class="text-center">@InputText</label></div>
+    }
+</div>
+@code {
+    [Parameter]
+    public bool IsEditable { get; set; }
+
+    [Parameter]
+    public bool IsTextBlockLocked { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public int InputText { get; set; }
+
+    [Parameter]
+    public int MaxValue { get; set; } = 100;
+
+    [Parameter]
+    public EventCallback<int> OnTextChanged { get; set; }
+}

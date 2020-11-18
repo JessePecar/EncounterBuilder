@@ -15,6 +15,8 @@
         public int Max { get; set; } = 20;
         [Parameter]
         public int Min { get; set; } = 0;
+        [Parameter]
+        public EventCallback<int> ValueCallback { get; set; }
 
         private bool IsShiftPressed { get; set; } = false;
 
@@ -22,10 +24,12 @@
         {
             Value += (IsShiftPressed ? 10 : 1);
             if (Value > Max) Value = Max;
+            ValueCallback.InvokeAsync(Value);
         }
         private void DecrementValue()
         {
             Value -= (IsShiftPressed ? 10 : 1);
             if (Value < Min) Value = Min;
+            ValueCallback.InvokeAsync(Value);
         }
     }

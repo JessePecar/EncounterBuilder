@@ -1,0 +1,40 @@
+﻿<div class="col-1 form-group">
+    <div><label class="text-center">@Title</label></div>
+    @if (IsEditable)
+    {
+        <div>
+            <select class="text-center form-control" @bind="InputAlignment" disabled="@IsAlignmentLocked" @onselectionchange="(e) => OnAlignmentChanged.InvokeAsync(InputAlignment)">
+                <option>@Alignment.LawfulGood.ToString()</option>
+                <option>@Alignment.LawfulNeutral.ToString()</option>
+                <option>@Alignment.LawfulEvil.ToString()</option>
+                <option>@Alignment.NeutralGood.ToString()</option>
+                <option>@Alignment.TrueNeutral.ToString()</option>
+                <option>@Alignment.NeutralEvil.ToString()</option>
+                <option>@Alignment.ChaoticGood.ToString()</option>
+                <option>@Alignment.ChaoticNeutral.ToString()</option>
+                <option>@Alignment.ChaoticEvil.ToString()</option>
+            </select>
+        </div>
+    }
+    else
+    {
+        <div><label class="text-center">@InputAlignment</label></div>
+    }
+</div>
+@code {
+    [Parameter]
+    public bool IsEditable { get; set; }
+
+    [Parameter]
+    public bool IsAlignmentLocked { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public Alignment InputAlignment { get; set; }
+
+    [Parameter]
+    public EventCallback<Alignment> OnAlignmentChanged { get; set; }
+
+}

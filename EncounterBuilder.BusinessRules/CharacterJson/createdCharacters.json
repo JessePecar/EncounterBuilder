@@ -4,22 +4,22 @@
     "Level": 1,
     "Race": "Hobgoblin",
     "Description": "Darkvision 60ft, passive perception 10, health can range from 11-11(2D8+2)",
-    "MaxHealth": 10,
+    "MaxHealth": 29,
     "Speed": 30,
-    "ArmorClass": 10,
+    "ArmorClass": 18,
     "Language": "Common, Goblin",
     "Stats": {
-      "Strength": 10,
+      "Strength": 13,
       "StrengthModifier": 0,
-      "Dexterity": 10,
+      "Dexterity": 12,
       "DexterityModifier": 0,
-      "Constitution": 10,
+      "Constitution": 12,
       "ConstitutionModifier": 0,
       "Intelligence": 10,
       "IntelligenceModifier": 0,
       "Wisdom": 10,
       "WisdomModifier": 0,
-      "Charisma": 10,
+      "Charisma": 9,
       "CharismaModifier": 0,
       "Initiative": 0
     },
@@ -30,7 +30,7 @@
           "Name": "Longsword (2 hand)",
           "Description": "+3 to hit, single target",
           "Damage": "1D10+1",
-          "Range": 0,
+          "Range": 5,
           "DamageType": 1,
           "SavingThrow": 0,
           "ThrowType": 0,
@@ -43,7 +43,7 @@
           "Name": "Longsword (1 hand)",
           "Description": "+3 to hit, single target",
           "Damage": "1D8+1",
-          "Range": 0,
+          "Range": 5,
           "DamageType": 1,
           "SavingThrow": 0,
           "ThrowType": 0,
@@ -56,7 +56,7 @@
           "Name": "Longbow",
           "Description": "+3 to hit, disadvantaged past 150ft, single target",
           "Damage": "1D8+1",
-          "Range": 0,
+          "Range": 600,
           "DamageType": 3,
           "SavingThrow": 0,
           "ThrowType": 0,
@@ -64,10 +64,94 @@
         }
       }
     ],
-    "Ablity": {
+    "Ability": {
       "Title": "Martial Advantage",
       "Description": "Once per turn, the hobgoblin can deal an extra 7 (2d6) damage to a creature it hits with a weapon attack if that creature is within 5 ft. of an ally of the hobgoblin that isn't incapacitated."
     },
     "Alignment": 2
-  }
+  },
+  {
+    "Name": "Hobgoblin Captain",
+    "Level": 3,
+    "Race": "Hobgoblin",
+    "Description": "Minimum 33 HP (3D10+12)",
+    "MaxHealth": 99,
+    "Speed": 30,
+    "ArmorClass": 17,
+    "Language": "Common, Goblin",
+    "Stats": {
+      "Strength": 15,
+      "StrengthModifier": 0,
+      "Dexterity": 14,
+      "DexterityModifier": 0,
+      "Constitution": 14,
+      "ConstitutionModifier": 0,
+      "Intelligence": 12,
+      "IntelligenceModifier": 0,
+      "Wisdom": 10,
+      "WisdomModifier": 0,
+      "Charisma": 13,
+      "CharismaModifier": 0,
+      "Initiative": 0
+    },
+    "Actions": [
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Multiattack",
+          "Description": "The hobgoblin makes two greatsword attacks.",
+          "Damage": "N/A",
+          "Range": 0,
+          "DamageType": 0,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Greatsword",
+          "Description": "Melee Weapon Attack: +4 to hit, single target",
+          "Damage": "2d6 + 2",
+          "Range": 5,
+          "DamageType": 2,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": true,
+        "CharacterAttack": {
+          "Name": "Javelin",
+          "Description": "Melee or Ranged Weapon Attack: +4 to hit, 5ft melee or disadvantage after 30ft, single target.",
+          "Damage": "1d6 + 2",
+          "Range": 120,
+          "DamageType": 3,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      },
+      {
+        "IsWeaponAttack": false,
+        "CharacterAttack": {
+          "Name": "Leadership",
+          "Description": "For 1 minute, the hobgoblin can utter a special command or warning whenever a nonhostile creature that it can see within 30 feet of it makes an attack roll or a saving throw. The creature can add a d4 to its roll provided it can hear and understand the hobgoblin. A creature can benefit from only one Leadership die at a time. This effect ends if the hobgoblin is incapacitated.",
+          "Damage": "N/A",
+          "Range": 30,
+          "DamageType": 0,
+          "SavingThrow": 0,
+          "ThrowType": 0,
+          "SpellDamageType": 0
+        }
+      }
+    ],
+    "Ability": {
+      "Title": "Martial Advantage",
+      "Description": "Once per turn, the hobgoblin can deal an extra 10 (3d6) damage to a creature it hits with a weapon attack if that creature is within 5 feet of an ally of the hobgoblin that isn’t incapacitated."
+    },
+    "Alignment": 2
+  }  
 ]

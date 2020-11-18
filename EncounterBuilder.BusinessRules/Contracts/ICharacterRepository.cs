@@ -12,5 +12,7 @@ namespace EncounterBuilder.BusinessRules.Contracts
         Task<List<Character>> GetAllCharacters();
 
         Task UpdateCurrentCharacter(Character updCharacter);
+
+        Task DeleteCharacter(Character deletedCharacter);
     }
 }
