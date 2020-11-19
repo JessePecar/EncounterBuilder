@@ -10,6 +10,7 @@ namespace EncounterBuilder.BusinessRules.Contracts
         Task AddToCharacterList(Character newCharacter);
 
         Task<List<Character>> GetAllCharacters();
+        Task<Character> GetCharacterByName(string Name);
 
         Task UpdateCurrentCharacter(Character updCharacter);
 

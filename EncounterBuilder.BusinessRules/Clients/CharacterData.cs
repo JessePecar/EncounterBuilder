@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using EncounterBuilder.BusinessRules.Contracts;
-using EncounterBuilder.DAC;
 using EncounterBuilder.Models.Character;
 using EncounterBuilder.Models.Saves;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EncounterBuilder.BusinessRules.Clients
@@ -71,6 +70,20 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
         }
 
+        public async Task<Character> GetCharacterByName(string Name)
+        {
+            try
+            {
+                List<Character> characters = _mapper.Map<List<DAC.Models.Character>, List<Character>>(await _repository.GetCharactersByName(Name));
+
+                return characters.FirstOrDefault(); ;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Delete
@@ -79,7 +92,7 @@ namespace EncounterBuilder.BusinessRules.Clients
         {
             try
             {
-                _repository.DeleteCharacter(_mapper.Map<DAC.Models.Character>(deletedCharacter))
+                _repository.DeleteCharacter(_mapper.Map<DAC.Models.Character>(deletedCharacter));
             }
             catch(Exception ex)
             {

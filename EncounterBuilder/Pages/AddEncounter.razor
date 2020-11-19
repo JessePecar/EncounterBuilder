@@ -1,0 +1,64 @@
+﻿@page "/AddEncounter"
+@page "/AddEncounter/{EncounterId}"
+@inject ICharacterRepository _characterData;
+<AddToEncounterModal ShowDialog="IsAddingCharacters" DialogToggle="(st) => { IsAddingCharacters = st; IsAltRow = false; }" AddNewCharacter="(character) => OnCharacterAdded(character)"></AddToEncounterModal>
+<div class="p-3">
+    <div class="row list-header ml-2 mr-2 p-2 mb-0">
+        <button class="btn btn-dark col-1" value="" @onclick="() => { IsAddingCharacters = !IsAddingCharacters; IsAltRow = false; }"><span class="oi oi-plus"></span>Add</button>
+        <div class="col-10"></div>
+        <button class="btn btn-success col-1" value="" @onclick="() => { }"><span class="oi oi-folder"></span>Save</button>
+
+    </div>
+    <div class="bg-light vh-75 ml-2 mr-2 p-1 pt-0 mt-0">
+        <hr class="border-dark" />
+        <label class="text-center font-weight-bolder w-100 @(!EncounterCharacters?.Any() ?? true ? "" : "d-none")" style="font-size: large;">No characters have been added to the encounter</label>
+
+        <div class="pre-scrollable h-90 p-4 shadow @(!EncounterCharacters?.Any() ?? true ? "d-none" : "")">
+            @foreach (Models.Character.Character character in EncounterCharacters)
+            {
+                
+                <DeleteCharacter Character="character" IsAltRow="EncounterCharacters.IndexOf(character) % 2 == 1" OnCharacterDelete="(character) => OnCharacterDeleted(character)" HealthChange="(health) => character.MaxHealth = health"></DeleteCharacter>
+                
+            }
+        </div>
+    </div>
+
+
+</div>
+@code {
+    [Parameter]
+    public List<Models.Character.Character> EncounterCharacters { get; set; }
+
+    [Parameter]
+    public int? EncounterId { get; set; }
+    private bool IsAltRow { get; set; } = false;
+    private bool IsAddingCharacters { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!EncounterId.HasValue)
+        {
+
+            if (EncounterCharacters == null)
+            {
+                //Get based on Encounter Id
+                EncounterCharacters = new List<Models.Character.Character>();
+            }
+        }
+        base.OnInitialized();
+    }
+
+    private void OnCharacterAdded(Models.Character.Character character)
+    {
+        IsAltRow = false;
+        EncounterCharacters.Add(character);
+        StateHasChanged();
+    }
+
+    private void OnCharacterDeleted(Models.Character.Character character)
+    {
+        IsAltRow = false;
+        EncounterCharacters.Remove(character);
+        StateHasChanged();
+    }
+}
