@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EncounterBuilder.DAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,23 +11,33 @@ namespace EncounterBuilder.BusinessRules.Profiles
         public CharacterProfiles()
         {
             CreateMap<Character, Models.Character.Character>()
-                .ForMember(dest => dest.Actions, opt => opt.MapFrom(src => src.Actions != null ? src.Actions.Select(a => a.Action).ToList() : new List<CharacterActions>()))
-                .ForMember(dest => dest.Ability, opt => opt.MapFrom(src => (src.Ability != null ? src.Ability : new CharacterAbility())))
-                .ForMember(dest => dest.Stats, opt => opt.MapFrom(src => (src.Stats != null ? src.Stats : new CharacterStats())))
+                .ForMember(dest => dest.Actions, opt => opt.MapFrom(src => src.ActionsLinks.Select(al => al.CharacterActions) ?? new List<CharacterActions>()))
+                .ForMember(dest => dest.Ability, opt => opt.MapFrom(src => src.CharacterAbilities.FirstOrDefault() ?? new CharacterAbility()))
+                .ForMember(dest => dest.Stats, opt => opt.MapFrom(src => src.CharacterStats.FirstOrDefault() ?? new CharacterStats()))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CharacterId))
+                .ForMember(dest => dest.Alignment, opt => opt.MapFrom(src => (int)src.Alignment))
                 .ReverseMap();
 
-            //CreateMap<Models.Character.Character, Character>()
-            //    .ForMember(dest => dest.Actions, opt => opt.MapFrom(src => src.Actions != null ? src.Actions.Select(a => a.Action).ToList() : new List<CharacterActions>()))
-            //    .ForMember(dest => dest.Ability, opt => opt.MapFrom(src => (src.Ability != null ? src.Ability : new CharacterAbility())))
-            //    .ForMember(dest => dest.Stats, opt => opt.MapFrom(src => (src.Stats != null ? src.Stats : new CharacterStats())))
-            //    .ReverseMap();
+            CreateMap<CharacterStats, Models.Character.CharacterStats>()
+                .ForMember(dest => dest.Charisma, opt => opt.MapFrom(src => (int)src.Charisma))
+                .ForMember(dest => dest.CharismaModifier, opt => opt.MapFrom(src => (int)src.CharismaModifier))
+                .ForMember(dest => dest.Constitution, opt => opt.MapFrom(src => (int)src.Constitution))
+                .ForMember(dest => dest.ConstitutionModifier, opt => opt.MapFrom(src => (int)src.ConstitutionModifier))
+                .ForMember(dest => dest.Dexterity, opt => opt.MapFrom(src => (int)src.Dexterity))
+                .ForMember(dest => dest.DexterityModifier, opt => opt.MapFrom(src => (int)src.DexterityModifier))
+                .ForMember(dest => dest.Intelligence, opt => opt.MapFrom(src => (int)src.Intelligence))
+                .ForMember(dest => dest.IntelligenceModifier, opt => opt.MapFrom(src => (int)src.IntelligenceModifier))
+                .ForMember(dest => dest.Strength, opt => opt.MapFrom(src => (int)src.Strength))
+                .ForMember(dest => dest.StrengthModifier, opt => opt.MapFrom(src => (int)src.StrengthModifier))
+                .ForMember(dest => dest.Wisdom, opt => opt.MapFrom(src => (int)src.Wisdom))
+                .ForMember(dest => dest.WisdomModifier, opt => opt.MapFrom(src => (int)src.WisdomModifier))
+                .ReverseMap();
 
-
-            CreateMap<CharacterStats, Models.Character.CharacterStats>().ReverseMap();
             CreateMap<ActionsLink, Models.Character.CharacterActions>()
-                .ForMember(dest => dest.CharacterAttack, opt => opt.MapFrom(src => src.Action.CharacterAttack))
-                .ForMember(dest => dest.IsWeaponAttack, opt => opt.MapFrom(src => src.Action.IsWeaponAttack))
+                .ForMember(dest => dest.CharacterAttack, opt => opt.MapFrom(src => src.CharacterActions.CharacterAttack))
+                .ForMember(dest => dest.IsWeaponAttack, opt => opt.MapFrom(src => src.CharacterActions.IsWeaponAttack))
                 .ReverseMap();
+
             CreateMap<CharacterAbility, Models.Character.CharacterAbility>()
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
@@ -37,13 +48,77 @@ namespace EncounterBuilder.BusinessRules.Profiles
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
                 ;
 
-            CreateMap<Attack, Models.Weapons.Attack>().ReverseMap();
+            CreateMap<Attack, Models.Weapons.Attack>()
+                .ForMember(dest => dest.SpellDamageType, opt => opt.MapFrom(src => (int)src.SpellDamageType))
+                .ForMember(dest => dest.ThrowType, opt => opt.MapFrom(src => (int)src.ThrowType))
+                .ForMember(dest => dest.DamageType, opt => opt.MapFrom(src => (int)src.DamageType))
+                ;
+
+            CreateMap<Models.Weapons.Attack, Attack>()
+                .ForMember(dest => dest.SpellDamageType, opt => opt.MapFrom(src => (int)src.SpellDamageType))
+                .ForMember(dest => dest.ThrowType, opt => opt.MapFrom(src => (int)src.ThrowType))
+                .ForMember(dest => dest.DamageType, opt => opt.MapFrom(src => (int)src.DamageType))
+                ;
 
             CreateMap<Models.Character.CharacterActions, ActionsLink>()
-                .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src))
-                .ReverseMap().ReverseMap();
+                .ForMember(dest => dest.CharacterActions, opt => opt.MapFrom(src => src))
+                .ReverseMap();
 
-            CreateMap<Models.Character.CharacterActions, CharacterActions>().ReverseMap();
+            CreateMap<Models.Character.CharacterActions, CharacterActions>()
+                .ForMember(dest => dest.CharacterAttack, opt => opt.MapFrom(src => src.CharacterAttack))
+                .ReverseMap();
+
+            CreateMap<Models.Campaign.Campaign, Campaign>().ReverseMap();
+
+            CreateMap<EncounterLink, Models.Character.Character>()
+                .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.Character.Language))
+                .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Character.Level))
+                .ForMember(dest => dest.Race, opt => opt.MapFrom(src => src.Character.Race))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Character.Name))
+                .ForMember(dest => dest.Speed, opt => opt.MapFrom(src => src.Character.Speed))
+                .ForMember(dest => dest.Stats, opt => opt.MapFrom(src => src.Character.CharacterStats.FirstOrDefault()))
+                .ForMember(dest => dest.Ability, opt => opt.MapFrom(src => src.Character.CharacterAbilities.FirstOrDefault()))
+                .ForMember(dest => dest.Actions, opt => opt.MapFrom(src => src.Character.ActionsLinks.ToList()))
+                .ForMember(dest => dest.Alignment, opt => opt.MapFrom(src => (int)src.Character.Alignment))
+                .ForMember(dest => dest.ArmorClass, opt => opt.MapFrom(src => src.Character.ArmorClass))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Character.Description))
+                .ForMember(dest => dest.MaxHealth, opt => opt.MapFrom(src => src.CurrentHp))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<Models.Character.Character, EncounterLink>()
+                .ForPath(dest => dest.Character.Language, opt => opt.MapFrom(src => src.Language))
+                .ForPath(dest => dest.Character.Level, opt => opt.MapFrom(src => src.Level))
+                .ForPath(dest => dest.Character.Race, opt => opt.MapFrom(src => src.Race))
+                .ForPath(dest => dest.Character.Name, opt => opt.MapFrom(src => src.Name))
+                .ForPath(dest => dest.Character.Speed, opt => opt.MapFrom(src => src.Speed))
+                .ForPath(dest => dest.Character.CharacterStats, opt => opt.MapFrom(src => new List<Models.Character.CharacterStats>() { src.Stats }))
+                .ForPath(dest => dest.Character.CharacterAbilities, opt => opt.MapFrom(src => new List<Models.Character.CharacterAbility>() { src.Ability }))
+                .ForPath(dest => dest.Character.ActionsLinks, opt => opt.MapFrom(src => src.Actions))
+                .ForPath(dest => dest.Character.Alignment, opt => opt.MapFrom(src => (int)src.Alignment))
+                .ForPath(dest => dest.Character.ArmorClass, opt => opt.MapFrom(src => src.ArmorClass))
+                .ForPath(dest => dest.Character.Description, opt => opt.MapFrom(src => src.Description))
+                .ForPath(dest => dest.CurrentHp, opt => opt.MapFrom(src => src.MaxHealth))
+                .ForPath(dest => dest.Character.CharacterId, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<Encounter, Models.Campaign.Encounter>()
+                .ForMember(dest => dest.EncounterCharacters, opt => opt.MapFrom(src => src.EncounterLinks))
+                .ForMember(dest => dest.Campaign, opt => opt.MapFrom(src => src.Campaign))
+                .ForPath(dest => dest.Campaign.Id, opt => opt.MapFrom(src => (src.Campaign.Id <= 0) ? 0 : src.Campaign.Id))
+                .ReverseMap();
+
+
+
+
+        }
+
+        private List<Models.Character.CharacterAbility> ReturnAbilityList(Models.Character.CharacterAbility ability)
+        {
+            return new List<Models.Character.CharacterAbility>() { ability };
+        }
+        private List<Models.Character.CharacterStats> ReturnStatsList(Models.Character.CharacterStats stats)
+        {
+            return new List<Models.Character.CharacterStats>() { stats };
         }
     }
 }

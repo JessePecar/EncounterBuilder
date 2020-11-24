@@ -22,6 +22,9 @@ namespace EncounterBuilder.DAC
         public DbSet<CharacterAbility> CharacterAbility { get; set; }
         public DbSet<Attack> Attacks { get; set; }
         public DbSet<ActionsLink> ActionsLink { get; set; }
+        public virtual DbSet<Campaign> Campaigns { get; set; }
+        public virtual DbSet<Encounter> Encounters { get; set; }
+        public virtual DbSet<EncounterLink> EncounterLinks { get; set; }
 
         #endregion
 
@@ -32,48 +35,116 @@ namespace EncounterBuilder.DAC
             {
                 entity.ToTable("ActionsLink");
 
-                entity.Property(e => e.CharacterActionsId).HasColumnType("bigint");
-
-                entity.Property(e => e.CharacterId).HasColumnType("bigint");
+                entity.HasOne(d => d.CharacterActions)
+                    .WithMany(p => p.ActionsLinks)
+                    .HasForeignKey(d => d.CharacterActionsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ActionsLink_CharacterActions");
 
                 entity.HasOne(d => d.Character)
-                    .WithMany(p => p.Actions)
+                    .WithMany(p => p.ActionsLinks)
                     .HasForeignKey(d => d.CharacterId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ActionsLink_Characters");
+            });
+
+            modelBuilder.Entity<Attack>(entity =>
+            {
+                entity.Property(e => e.Damage).HasColumnType("text");
+
+                entity.Property(e => e.Description).HasColumnType("text");
+
+                entity.Property(e => e.Name).HasColumnType("text");
+            });
+
+            modelBuilder.Entity<Campaign>(entity =>
+            {
+                entity.ToTable("Campaign");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+            });
+
+            modelBuilder.Entity<Character>(entity =>
+            {
+                entity.Property(e => e.Description).HasColumnType("varchar(1000)");
+
+                entity.Property(e => e.Language).HasColumnType("varchar(50)");
+
+                entity.Property(e => e.Name).IsUnicode(false).HasColumnType("varchar(50)");
+
+                entity.Property(e => e.Race).HasColumnType("varchar(50)");
             });
 
             modelBuilder.Entity<CharacterAbility>(entity =>
             {
                 entity.ToTable("CharacterAbility");
+
+                entity.Property(e => e.Description).HasColumnType("text");
+
+                entity.Property(e => e.Title).HasColumnType("text");
+
+                entity.HasOne(d => d.Character)
+                    .WithMany(p => p.CharacterAbilities)
+                    .HasForeignKey(d => d.CharacterId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CharacterAbility_Characters");
             });
 
             modelBuilder.Entity<CharacterActions>(entity =>
             {
                 entity.HasKey(e => e.CharacterActionsId);
 
-                entity.HasIndex(e => e.CharacterAttackId, "IX_CharacterActions_CharacterAttackAttackId");
-
                 entity.HasOne(d => d.CharacterAttack)
                     .WithMany(p => p.CharacterActions)
-                    .HasForeignKey(d => d.CharacterAttackId);
+                    .HasForeignKey(d => d.CharacterAttackId)
+                    .HasConstraintName("FK_CharacterActions_Attacks");
             });
 
             modelBuilder.Entity<CharacterStats>(entity =>
             {
                 entity.HasKey(e => e.CharacterStatsId);
 
-                entity.HasOne(cs => cs.Character).WithOne(c => c.Stats);
+                entity.HasOne(d => d.Character)
+                    .WithMany(p => p.CharacterStats)
+                    .HasForeignKey(d => d.CharacterId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CharacterStats_Characters");
             });
 
-            modelBuilder.Entity<Character>(entity =>
+            modelBuilder.Entity<Encounter>(entity =>
             {
-                entity.HasKey(c => c.CharacterId);
+                entity.ToTable("Encounter");
 
-                entity.HasOne(c => c.Stats).WithOne(s => s.Character);
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(1000);
 
-                entity.HasOne(c => c.Ability).WithOne(s => s.Character);
+                entity.HasOne(d => d.Campaign)
+                    .WithMany(p => p.Encounters)
+                    .HasForeignKey(d => d.CampaignId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Encounter_Campaign");
+            });
 
-                entity.HasMany(c => c.Actions).WithOne(a => a.Character);
+            modelBuilder.Entity<EncounterLink>(entity =>
+            {
+                entity.ToTable("EncounterLink");
+
+                entity.Property(e => e.CurrentHp).HasColumnName("CurrentHP");
+
+                entity.HasOne(d => d.Character)
+                    .WithMany(p => p.EncounterLinks)
+                    .HasForeignKey(d => d.CharacterId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EncounterLink_Characters");
+
+                entity.HasOne(d => d.Encounter)
+                    .WithMany(p => p.EncounterLinks)
+                    .HasForeignKey(d => d.EncounterId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EncounterLink_Encounter");
             });
 
             OnModelCreatingPartial(modelBuilder);

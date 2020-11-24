@@ -1,64 +1,27 @@
-﻿namespace EncounterBuilder.DAC.Models
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
+
+namespace EncounterBuilder.DAC.Models
 {
-    public class CharacterStats
+    public partial class CharacterStats
     {
-        /// <summary>
-        /// Id of the character the stats belong to
-        /// </summary>
-        public int CharacterStatsId { get; set; }
-        /// <summary>
-        /// Id of the character the stats belong to
-        /// </summary>
+        public long CharacterStatsId { get; set; }
         public long CharacterId { get; set; }
-        /// <summary>
-        /// Character's Strength
-        /// </summary>
-        public int Strength { get; set; }
-        /// <summary>
-        /// Custom Modifier
-        /// </summary>
-        public int StrengthModifier { get; set; }
-        /// <summary>
-        /// Character's Charisma
-        /// </summary>
-        public int Dexterity { get; set; }
-        /// <summary>
-        /// Custom Modifier
-        /// </summary>
-        public int DexterityModifier { get; set; }
-        /// <summary>
-        /// Charatcter's Constitution
-        /// </summary>
-        public int Constitution { get; set; }
-        /// <summary>
-        /// Custom Modifier
-        /// </summary>
-        public int ConstitutionModifier { get; set; }
-        /// <summary>
-        /// Character's Intelligence
-        /// </summary>
-        public int Intelligence { get; set; }
-        /// <summary>
-        /// Custom Modifier
-        /// </summary>
-        public int IntelligenceModifier { get; set; }
-        /// <summary>
-        /// Character's Wisdom
-        /// </summary>
-        public int Wisdom { get; set; }
-        /// <summary>
-        /// Custom Modifier
-        /// </summary>
-        public int WisdomModifier { get; set; }
-        /// <summary>
-        /// Character's Charisma
-        /// </summary>
-        public int Charisma { get; set; }
-        /// <summary>
-        /// Custom Modifier
-        /// </summary>
-        public int CharismaModifier { get; set; }
-        
-        public Character Character { get; set; }
+        public long Strength { get; set; }
+        public long StrengthModifier { get; set; }
+        public long Dexterity { get; set; }
+        public long DexterityModifier { get; set; }
+        public long Constitution { get; set; }
+        public long ConstitutionModifier { get; set; }
+        public long Intelligence { get; set; }
+        public long IntelligenceModifier { get; set; }
+        public long Wisdom { get; set; }
+        public long WisdomModifier { get; set; }
+        public long Charisma { get; set; }
+        public long CharismaModifier { get; set; }
+
+        public virtual Character Character { get; set; }
     }
 }

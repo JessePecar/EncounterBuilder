@@ -17,7 +17,6 @@
                     @foreach (Models.Character.Character character in Characters)
                     {
                         <AddCharacter Character="character" IsAltRow="Characters.IndexOf(character) % 2 == 1" OnAddCharacter="(character) => AddNewCharacterToEncounter(character)"></AddCharacter>
-                        
                     }
                 </div>
             </div>
@@ -51,13 +50,12 @@
 
     private async Task ResetDialog()
     {
-        Characters = await _characterData.GetAllCharacters();
+        Characters = _characterData.GetAllCharacters();
     }
 
     private async Task AddNewCharacterToEncounter(Models.Character.Character character)
     {
-        Models.Character.Character passCharacter = await _characterData.GetCharacterByName(character.Name);
-        passCharacter.Id = Guid.NewGuid();
+        Models.Character.Character passCharacter = _characterData.GetCharacterByName(character.Name);
         AddNewCharacter.InvokeAsync(passCharacter);
     }
 }

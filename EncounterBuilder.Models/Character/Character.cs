@@ -7,7 +7,7 @@ namespace EncounterBuilder.Models.Character
 {
     public class Character
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// Name of the character
         /// </summary>

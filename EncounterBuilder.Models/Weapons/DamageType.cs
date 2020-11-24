@@ -6,9 +6,9 @@ namespace EncounterBuilder.Models.Weapons
 {
     public enum DamageType
     {
-        None,
-        Slashing,
-        Piercing,
-        Ranged
+        None = 0,
+        Slashing = 1,
+        Piercing = 2,
+        Ranged = 3
     }
 }

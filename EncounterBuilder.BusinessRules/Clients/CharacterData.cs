@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EncounterBuilder.BusinessRules.Contracts;
+using EncounterBuilder.Models.Campaign;
 using EncounterBuilder.Models.Character;
 using EncounterBuilder.Models.Saves;
 using System;
@@ -40,13 +41,26 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
         }
 
-        public async Task UpdateCurrentCharacter(Character updCharacter)
+        public async Task AddNewCampaign(Campaign newCampaign)
+        {
+            try
+            { 
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task AddEncounter(Encounter newEncounter)
         {
             try
             {
-                await _repository.UpdateCharacter(_mapper.Map<DAC.Models.Character>(updCharacter));
+                DAC.Models.Encounter dbEncounter = _mapper.Map<DAC.Models.Encounter>(newEncounter);
+                await _repository.AddEncounter(dbEncounter);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw ex;
             }
@@ -56,12 +70,11 @@ namespace EncounterBuilder.BusinessRules.Clients
 
         #region Read
 
-        public async Task<List<Character>> GetAllCharacters()
+        public List<Character> GetAllCharacters()
         {
             try
             {
-                List<Character> characters = _mapper.Map<List<DAC.Models.Character>, List<Character>>(await _repository.GetCharacters());
-
+                List<Character> characters = _mapper.Map<List<DAC.Models.Character>, List<Character>>(_repository.GetCharacters());
                 return characters;
             }
             catch (Exception ex)
@@ -70,13 +83,57 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
         }
 
-        public async Task<Character> GetCharacterByName(string Name)
+        public Character GetCharacterByName(string Name)
         {
             try
             {
-                List<Character> characters = _mapper.Map<List<DAC.Models.Character>, List<Character>>(await _repository.GetCharactersByName(Name));
+                List<Character> characters = _mapper.Map<List<DAC.Models.Character>, List<Character>>(_repository.GetCharactersByName(Name));
 
-                return characters.FirstOrDefault(); ;
+                return characters.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<Campaign> GetCampaigns(bool isSelector = true)
+        {
+            try
+            {
+                List<Campaign> campaigns = new List<Campaign>();
+                if (isSelector)
+                {
+                    campaigns.AddRange(new List<Campaign>()
+                    {
+                        new Campaign(){ Id = -1, Name = "-- Select Campaign --" },
+                        new Campaign(){ Id = -69, Name = "Create new campaign." }
+                    });
+                }
+                List<DAC.Models.Campaign> databaseCampaigns = _repository.GetCampaigns();
+
+                if(databaseCampaigns != null)
+                {
+                    campaigns.AddRange(_mapper.Map<List<DAC.Models.Campaign>, List<Campaign>>(databaseCampaigns));
+                }
+
+                return campaigns;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region Update
+
+        public async Task UpdateCurrentCharacter(Character updCharacter)
+        {
+            try
+            {
+                await _repository.UpdateCharacter(_mapper.Map<DAC.Models.Character>(updCharacter));
             }
             catch (Exception ex)
             {
