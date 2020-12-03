@@ -71,35 +71,12 @@ namespace EncounterBuilder.BusinessRules.Profiles
             CreateMap<Models.Campaign.Campaign, Campaign>().ReverseMap();
 
             CreateMap<EncounterLink, Models.Character.Character>()
-                .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.Character.Language))
-                .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Character.Level))
-                .ForMember(dest => dest.Race, opt => opt.MapFrom(src => src.Character.Race))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Character.Name))
-                .ForMember(dest => dest.Speed, opt => opt.MapFrom(src => src.Character.Speed))
-                .ForMember(dest => dest.Stats, opt => opt.MapFrom(src => src.Character.CharacterStats.FirstOrDefault()))
-                .ForMember(dest => dest.Ability, opt => opt.MapFrom(src => src.Character.CharacterAbilities.FirstOrDefault()))
-                .ForMember(dest => dest.Actions, opt => opt.MapFrom(src => src.Character.ActionsLinks.ToList()))
-                .ForMember(dest => dest.Alignment, opt => opt.MapFrom(src => (int)src.Character.Alignment))
-                .ForMember(dest => dest.ArmorClass, opt => opt.MapFrom(src => src.Character.ArmorClass))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Character.Description))
-                .ForMember(dest => dest.MaxHealth, opt => opt.MapFrom(src => src.CurrentHp))
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CharacterId));
 
             CreateMap<Models.Character.Character, EncounterLink>()
-                .ForPath(dest => dest.Character.Language, opt => opt.MapFrom(src => src.Language))
-                .ForPath(dest => dest.Character.Level, opt => opt.MapFrom(src => src.Level))
-                .ForPath(dest => dest.Character.Race, opt => opt.MapFrom(src => src.Race))
-                .ForPath(dest => dest.Character.Name, opt => opt.MapFrom(src => src.Name))
-                .ForPath(dest => dest.Character.Speed, opt => opt.MapFrom(src => src.Speed))
-                .ForPath(dest => dest.Character.CharacterStats, opt => opt.MapFrom(src => new List<Models.Character.CharacterStats>() { src.Stats }))
-                .ForPath(dest => dest.Character.CharacterAbilities, opt => opt.MapFrom(src => new List<Models.Character.CharacterAbility>() { src.Ability }))
-                .ForPath(dest => dest.Character.ActionsLinks, opt => opt.MapFrom(src => src.Actions))
-                .ForPath(dest => dest.Character.Alignment, opt => opt.MapFrom(src => (int)src.Alignment))
-                .ForPath(dest => dest.Character.ArmorClass, opt => opt.MapFrom(src => src.ArmorClass))
-                .ForPath(dest => dest.Character.Description, opt => opt.MapFrom(src => src.Description))
-                .ForPath(dest => dest.CurrentHp, opt => opt.MapFrom(src => src.MaxHealth))
-                .ForPath(dest => dest.Character.CharacterId, opt => opt.Ignore())
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CurrentHp, opt => opt.MapFrom(src => src.MaxHealth))
+                .ForMember(dest => dest.CharacterId, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<Encounter, Models.Campaign.Encounter>()
                 .ForMember(dest => dest.EncounterCharacters, opt => opt.MapFrom(src => src.EncounterLinks))
@@ -112,13 +89,13 @@ namespace EncounterBuilder.BusinessRules.Profiles
 
         }
 
-        private List<Models.Character.CharacterAbility> ReturnAbilityList(Models.Character.CharacterAbility ability)
-        {
-            return new List<Models.Character.CharacterAbility>() { ability };
-        }
-        private List<Models.Character.CharacterStats> ReturnStatsList(Models.Character.CharacterStats stats)
-        {
-            return new List<Models.Character.CharacterStats>() { stats };
-        }
+        //private List<Models.Character.CharacterAbility> ReturnAbilityList(Models.Character.CharacterAbility ability)
+        //{
+        //    return new List<Models.Character.CharacterAbility>() { ability };
+        //}
+        //private List<Models.Character.CharacterStats> ReturnStatsList(Models.Character.CharacterStats stats)
+        //{
+        //    return new List<Models.Character.CharacterStats>() { stats };
+        //}
     }
 }

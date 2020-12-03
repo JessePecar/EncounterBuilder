@@ -56,6 +56,6 @@
     private async Task AddNewCharacterToEncounter(Models.Character.Character character)
     {
         Models.Character.Character passCharacter = _characterData.GetCharacterByName(character.Name);
-        AddNewCharacter.InvokeAsync(passCharacter);
+        await AddNewCharacter.InvokeAsync(passCharacter);
     }
 }
