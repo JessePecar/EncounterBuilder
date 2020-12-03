@@ -134,12 +134,6 @@ namespace EncounterBuilder.DAC
 
                 entity.Property(e => e.CurrentHp).HasColumnName("CurrentHP");
 
-                entity.HasOne(d => d.Character)
-                    .WithMany(p => p.EncounterLinks)
-                    .HasForeignKey(d => d.CharacterId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EncounterLink_Characters");
-
                 entity.HasOne(d => d.Encounter)
                     .WithMany(p => p.EncounterLinks)
                     .HasForeignKey(d => d.EncounterId)

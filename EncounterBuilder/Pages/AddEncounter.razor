@@ -1,5 +1,6 @@
 ﻿@page "/AddEncounter"
 @page "/AddEncounter/{EncounterId}"
+
 @inject ICharacterRepository _characterData;
 @inject NavigationManager navManager;
 <AddToEncounterModal ShowDialog="IsAddingCharacters" DialogToggle="(st) => { IsAddingCharacters = st; IsAltRow = false; }" AddNewCharacter="(character) => OnCharacterAdded(character)"></AddToEncounterModal>
@@ -46,6 +47,8 @@
 
 
 </div>
+
+
 @code {
     [Parameter]
     public List<Models.Character.Character> EncounterCharacters { get; set; } = new List<Models.Character.Character>();
@@ -68,7 +71,7 @@
     private string EncounterName { get; set; }
 
     protected override async Task OnInitializedAsync()
-    {
+    {   
         if (EncounterId.HasValue)
         {
             if (EncounterCharacters == null)
