@@ -6,11 +6,11 @@ namespace EncounterBuilder.Models.General
 {
     public enum SavingThrowTypes
     {
-        Charisma, 
-        Strength,
-        Dexterity,
-        Constitution,
-        Wisdom,
-        Intelligence
+        Charisma = 0,
+        Strength = 1,
+        Dexterity = 2,
+        Constitution = 3,
+        Wisdom = 4,
+        Intelligence = 5
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EncounterBuilder.Models.General;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -6,6 +7,7 @@ namespace EncounterBuilder.Models.Character
 {
     public class Character
     {
+        public long Id { get; set; }
         /// <summary>
         /// Name of the character
         /// </summary>

@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncounterBuilder.BusinessRu
 		{4D2517AB-73D6-456D-B915-CE3B9D0C68B3} = {4D2517AB-73D6-456D-B915-CE3B9D0C68B3}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncounterBuilder.DAC", "EncounterBuilder.DAC\EncounterBuilder.DAC.csproj", "{A3A0EACF-5211-4302-8BB5-B925766531C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncounterBuilder.DAC", "EncounterBuilder.DAC\EncounterBuilder.DAC.csproj", "{A3A0EACF-5211-4302-8BB5-B925766531C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

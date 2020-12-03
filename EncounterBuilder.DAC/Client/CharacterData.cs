@@ -36,8 +36,8 @@ namespace EncounterBuilder.DAC.Client
 
             if (charToUpdate != null)
             {
-                currCharacter.Ability.CharacterId = currCharacter.CharacterId;
-                _context.CharacterAbility.Add(currCharacter.Ability);
+                currCharacter.CharacterAbilities.FirstOrDefault().CharacterId = currCharacter.CharacterId;
+                _context.CharacterAbility.Add(currCharacter.CharacterAbilities.FirstOrDefault());
                 _context.SaveChanges();
             }
 
@@ -48,7 +48,10 @@ namespace EncounterBuilder.DAC.Client
             {
                 Character charToUpdate = _context.Characters.FirstOrDefault(c => c.Name == name);
 
-                long actionId = _context.CharacterActions.Where(ca => ca.CharacterAttack.Name == currCharacter.CharacterAttack.Name).Select(cs => cs.CharacterActionsId).FirstOrDefault();
+                long actionId = _context.CharacterActions
+                    .Where(ca => ca.CharacterAttack.Name == currCharacter.CharacterAttack.Name)
+                    .Select(cs => cs.CharacterActionsId)
+                    .FirstOrDefault();
 
                 if (charToUpdate != null)
                 {
@@ -63,26 +66,51 @@ namespace EncounterBuilder.DAC.Client
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 throw ex;
             }
 
         }
+
+        public async Task AddEncounter(Encounter encounter)
+        {
+            try
+            {
+                if(!_context.Campaigns?.Any(c => c.Id == encounter.CampaignId) ?? false)
+                {
+                    encounter.Campaign.Id = 0;
+                    _context.Campaigns.Add(encounter.Campaign);
+                    _context.SaveChanges();
+
+                    encounter.CampaignId = _context.Campaigns.FirstOrDefault(c => c.Name == encounter.Campaign.Name).Id;
+                }
+                encounter.Campaign = null;
+                _context.Campaigns.FirstOrDefault(c => c.Id == encounter.CampaignId)?.Encounters.Add(encounter);
+                
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         #region Read
-        public async Task<List<Character>> GetCharacters()
+        public List<Character> GetCharacters()
         {
             List<Character> characters = new List<Character>();
             try
             {
-                characters = await _context.Characters
-                    .Include(c => c.Stats)
-                    .Include(c => c.Actions).ThenInclude(a => a.Action).ThenInclude(ac => ac.CharacterAttack)
-                    .Include(c => c.Ability)
-                    .ToListAsync();
+                characters = _context.Characters
+                    .Include(c => c.CharacterStats)
+                    .Include(c => c.ActionsLinks)
+                    .ThenInclude(a => a.CharacterActions)
+                    .ThenInclude(ac => ac.CharacterAttack)
+                    .Include(c => c.CharacterAbilities)
+                    .ToList();
 
             }
             catch (Exception ex)
@@ -92,16 +120,20 @@ namespace EncounterBuilder.DAC.Client
             return characters;
         }
 
-        public async Task<List<Character>> GetCharactersByName(string name)
+        public List<Character> GetCharactersByName(string name)
         {
             List<Character> characters = new List<Character>();
             try
             {
-                characters = await _context.Characters
-                    .Include(c => c.Ability)
-                    .Include(c => c.Actions)
-                    .Include(c => c.Stats)
-                    .Where(c => c.Name == name).ToListAsync();
+                characters = _context.Characters
+                    .Include(c => c.CharacterStats)
+                    .Include(c => c.ActionsLinks)
+                    .ThenInclude(a => a.CharacterActions)
+                    .ThenInclude(ac => ac.CharacterAttack)
+                    .Include(c => c.CharacterAbilities).Where(c => c.Name.Equals(name))
+                    .ToList();
+
+                characters = characters.ToList();
             }
             catch (Exception ex)
             {
@@ -110,6 +142,19 @@ namespace EncounterBuilder.DAC.Client
             return characters;
         }
 
+        public List<Campaign> GetCampaigns()
+        {
+            List<Campaign> campaigns = new List<Campaign>();
+            try
+            {
+                campaigns = _context.Campaigns.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return campaigns;
+        }
         #endregion
 
         #region Update

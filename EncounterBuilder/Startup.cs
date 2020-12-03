@@ -28,7 +28,9 @@ namespace EncounterBuilder
         {
             services.AddEntityFrameworkSqlite().AddDbContext<EncounterBuilderDbContext>(options =>
             {
-                options.UseSqlite("Data Source = EncounterBuilder.db", b => b.MigrationsAssembly("EncounterBuilder.DAC"));
+                options.UseSqlServer(@"Server=PECKERTON\ENCOUNTERDB; Database=ENCOUNTERX; Trusted_Connection=True;");
+                
+                options.EnableSensitiveDataLogging(true);
             });
 
             services.AddScoped<ICharacterRepository, CharacterData>();

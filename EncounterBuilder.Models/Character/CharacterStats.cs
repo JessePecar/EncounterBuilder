@@ -10,6 +10,7 @@
         /// Custom Modifier
         /// </summary>
         public int StrengthModifier { get; set; }
+        public int StrengthBonus => GetModifier(Strength, nameof(Strength));
         /// <summary>
         /// Character's Charisma
         /// </summary>
@@ -18,6 +19,7 @@
         /// Custom Modifier
         /// </summary>
         public int DexterityModifier { get; set; }
+        public int DexterityBonus => GetModifier(Dexterity, nameof(Dexterity));
         /// <summary>
         /// Charatcter's Constitution
         /// </summary>
@@ -26,6 +28,7 @@
         /// Custom Modifier
         /// </summary>
         public int ConstitutionModifier { get; set; }
+        public int ConstitutionBonus => GetModifier(Constitution, nameof(Constitution));
         /// <summary>
         /// Character's Intelligence
         /// </summary>
@@ -34,6 +37,7 @@
         /// Custom Modifier
         /// </summary>
         public int IntelligenceModifier { get; set; }
+        public int IntelligenceBonus => GetModifier(Intelligence, nameof(Intelligence));
         /// <summary>
         /// Character's Wisdom
         /// </summary>
@@ -42,6 +46,7 @@
         /// Custom Modifier
         /// </summary>
         public int WisdomModifier { get; set; }
+        public int WisdomBonus => GetModifier(Wisdom, nameof(Wisdom));
         /// <summary>
         /// Character's Charisma
         /// </summary>
@@ -50,6 +55,7 @@
         /// Custom Modifier
         /// </summary>
         public int CharismaModifier { get; set; }
+        public int CharismaBonus => GetModifier(Charisma, nameof(Charisma));
         /// <summary>
         /// The initiative modifier
         /// </summary>
@@ -63,8 +69,8 @@
         {
             int attrModifier = (this.GetType().GetProperty($"{statName}Modifier").GetValue(this, null) as int?).GetValueOrDefault();
             currentStat -= 10;
-            attrModifier += currentStat / 3;
-
+            attrModifier += currentStat / 2;
+            
             return attrModifier;
         }
 
@@ -77,7 +83,7 @@
         {
             int attrModifier = 0;
             currentStat -= 10;
-            attrModifier += currentStat / 3;
+            attrModifier += currentStat / 2;
 
             return attrModifier;
         }

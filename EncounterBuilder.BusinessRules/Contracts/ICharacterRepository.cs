@@ -1,4 +1,5 @@
 ﻿
+using EncounterBuilder.Models.Campaign;
 using EncounterBuilder.Models.Character;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,7 +10,11 @@ namespace EncounterBuilder.BusinessRules.Contracts
     {
         Task AddToCharacterList(Character newCharacter);
 
-        Task<List<Character>> GetAllCharacters();
+        List<Character> GetAllCharacters();
+        Character GetCharacterByName(string Name);
+        List<Campaign> GetCampaigns(bool isSelector = true);
+
+        Task AddEncounter(Encounter newEncounter);
 
         Task UpdateCurrentCharacter(Character updCharacter);
 

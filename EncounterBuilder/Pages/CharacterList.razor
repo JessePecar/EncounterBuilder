@@ -13,7 +13,7 @@
         @foreach (Models.Character.Character character in characters)
         {
             <div class="pb-1">
-                <Character CurrentCharacter="@character" IsNewCharacter="false" OnCharacterChange="async () => { characters = await _characterData.GetAllCharacters(); StateHasChanged(); }"></Character>
+                <Character CurrentCharacter="@character" IsNewCharacter="false" OnCharacterChange="async () => { characters = _characterData.GetAllCharacters(); StateHasChanged(); }"></Character>
             </div>
         }
     </div>
@@ -29,7 +29,7 @@
 
     private async Task GetAllCharacters()
     {
-        characters = await _characterData.GetAllCharacters();
+        characters = _characterData.GetAllCharacters();
         if (characters == null)
         {
             characters = new List<Models.Character.Character>();

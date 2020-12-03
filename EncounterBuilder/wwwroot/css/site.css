@@ -1,5 +1,12 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+@media (min-width: 768px) {
+    .modal-dialog {
+        min-width: 1500px;
+        margin: 100px auto;
+    }
+}
+
 body {
     line-height: 2.2;
 }
@@ -163,4 +170,21 @@ label {
 
 .pre-scrollable{
     max-height: inherit;
+}
+
+.list-header {
+    border-radius: 4px 4px 0px 0px;
+    background: #f8f9fa !important;
+}
+
+.vh-70{
+    height: 70vh !important;
+}
+
+.bg-alt-light{
+    background: #CCCCCC;
+}
+
+.h-90{
+    height: 95% !important;
 }

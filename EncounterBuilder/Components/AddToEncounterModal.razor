@@ -1,0 +1,61 @@
+﻿@inject ICharacterRepository _characterData;
+@if (ShowDialog)
+{
+    <div class="modal fade show d-block vw-100 mt-5" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modeal-header p-1">
+                    <div class="row">
+                        <h5 class="modal-title col-11 text-center" id="titleLabel">Add To Encounter</h5>
+                        <button type="button" class="close col-1" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <hr class="border-dark"/>
+                </div>
+                <div class="modal-body h-90 pre-scrollable">
+                    @foreach (Models.Character.Character character in Characters)
+                    {
+                        <AddCharacter Character="character" IsAltRow="Characters.IndexOf(character) % 2 == 1" OnAddCharacter="(character) => AddNewCharacterToEncounter(character)"></AddCharacter>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    private List<Models.Character.Character> Characters { get; set; }
+
+    [Parameter]
+    public  bool ShowDialog { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<bool> DialogToggle { get; set; }
+
+    [Parameter]
+    public EventCallback<Models.Character.Character> AddNewCharacter{ get; set; }
+
+    private bool IsAltRow { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+        await ResetDialog();
+        base.OnInitialized();
+    }
+    private void Close()
+    {
+        ShowDialog = false;
+        DialogToggle.InvokeAsync(ShowDialog);
+        StateHasChanged();
+    }
+
+    private async Task ResetDialog()
+    {
+        Characters = _characterData.GetAllCharacters();
+    }
+
+    private async Task AddNewCharacterToEncounter(Models.Character.Character character)
+    {
+        Models.Character.Character passCharacter = _characterData.GetCharacterByName(character.Name);
+        AddNewCharacter.InvokeAsync(passCharacter);
+    }
+}

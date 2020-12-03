@@ -6,8 +6,10 @@ namespace EncounterBuilder.DAC.Contract
 {
     public interface ICharacterRepository
     {
-        Task<List<Character>> GetCharacters();
-        Task<List<Character>> GetCharactersByName(string name);
+        List<Character> GetCharacters();
+        List<Character> GetCharactersByName(string name);
+        List<Campaign> GetCampaigns();
+        Task AddEncounter(Encounter encounter);
         Task CreateNewCharacter(Character newCharacter);
         Task CreateNewCharacterAbility(Character currCharacter);
         Task CreateNewCharacterAction(CharacterActions currCharacter, string name);
