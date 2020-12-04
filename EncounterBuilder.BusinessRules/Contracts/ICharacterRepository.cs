@@ -11,8 +11,12 @@ namespace EncounterBuilder.BusinessRules.Contracts
         Task AddToCharacterList(Character newCharacter);
 
         List<Character> GetAllCharacters();
+
         Character GetCharacterByName(string Name);
+
         List<Campaign> GetCampaigns(bool isSelector = true);
+
+        List<Encounter> GetEncounters();
 
         Task AddEncounter(Encounter newEncounter);
 

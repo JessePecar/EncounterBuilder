@@ -1,6 +1,35 @@
 ﻿@page "/"
+@inject ICharacterRepository _charData;
 
+<div class="row p-2 ml-2 mr-2">
+    @foreach (var encounter in Encounters)
+    {
+        <div class="col-3 p-2">
+            <div class="bg-lightish shadow p-2">
+                <div>
+                    <strong>Campaign: </strong>
+                    <label>@encounter.Campaign.Name</label>
+                </div>
+                <div>
+                    <strong>Encounter: </strong>
+                    <label>@encounter.Name</label>
+                </div>
+                <div>
+                    <strong>Characters: </strong>
+                    <label>@encounter.EncounterCharacters.Count() / @encounter.InitialCharacterCount</label>
+                </div>
+            </div>
 
-    @code {
-        
+        </div>
     }
+</div>
+@code {
+    List<Models.Campaign.Encounter> Encounters { get; set; } = new List<Models.Campaign.Encounter>();
+
+    protected override void OnInitialized()
+    {
+        Encounters = _charData.GetEncounters();
+        if (Encounters == null) Encounters = new List<Models.Campaign.Encounter>();
+        base.OnInitialized();
+    }
+}

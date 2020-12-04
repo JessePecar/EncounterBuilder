@@ -125,6 +125,28 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
         }
 
+        public List<Encounter> GetEncounters()
+        {
+            try
+            {
+                List<Encounter> encounters = _mapper.Map<List<Encounter>>(_repository.GetEncounters());
+                encounters.ForEach(e =>
+                {
+                    List<Tuple<int, int>> tempChars = new List<Tuple<int, int>>();
+                    e.EncounterCharacters.ForEach(ec => 
+                    {
+                        tempChars.Add(new Tuple<int, int>((int)ec.Id, ec.MaxHealth));
+                    });
+                    e.EncounterCharacters = _mapper.Map<List<Character>>(_repository.GetCharactersByIds(tempChars));
+                });
+                return encounters;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+                Console.WriteLine(ex.Message);
+            }
+        }
         #endregion
 
         #region Update
