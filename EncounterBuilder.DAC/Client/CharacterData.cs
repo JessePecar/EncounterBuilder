@@ -142,6 +142,35 @@ namespace EncounterBuilder.DAC.Client
             return characters;
         }
 
+        public List<Character> GetCharactersByIds(List<Tuple<int, int>> characters)
+        {
+            try
+            {
+                List<Character> retChars = new List<Character>();
+                characters.ForEach(c =>
+                {
+                    Character character = _context.Characters
+                    .Include(c => c.CharacterStats)
+                    .Include(c => c.ActionsLinks)
+                    .ThenInclude(a => a.CharacterActions)
+                    .ThenInclude(ac => ac.CharacterAttack)
+                    .Include(c => c.CharacterAbilities).FirstOrDefault(ch => ch.CharacterId == c.Item1);
+
+                    if(character != null)
+                    {
+                        character.MaxHealth = c.Item2;
+                        retChars.Add(character);
+                    }
+                });
+
+                return retChars;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
         public List<Campaign> GetCampaigns()
         {
             List<Campaign> campaigns = new List<Campaign>();
@@ -154,6 +183,24 @@ namespace EncounterBuilder.DAC.Client
                 Console.WriteLine(ex);
             }
             return campaigns;
+        }
+
+        public List<Encounter> GetEncounters()
+        {
+            try
+            {
+                List<Encounter> encounters = new List<Encounter>();
+                encounters = _context.Encounters
+                    .Include(e => e.EncounterLinks)
+                    .Include(e => e.Campaign)
+                    .ToList();
+
+                return encounters;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
         #endregion
 

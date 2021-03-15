@@ -18,7 +18,7 @@
     <div><label class="text-center">@nameof(CharacterStats.Wisdom)</label></div>
     <NumberInput Value="@CharacterStats.Wisdom" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Wisdom = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Wisdom), CharacterStats.Wisdom)); }" />
 </div>
-<div class="col-1 form-group ">
+<div class="col-1 form-group">
     <div><label class="text-center">@nameof(CharacterStats.Charisma)</label></div>
     <NumberInput Value="@CharacterStats.Charisma" IsCharacterLocked="@IsCharacterLocked" ValueCallback="(val) =>{ CharacterStats.Charisma = val; StatUpdate.InvokeAsync(new KeyValuePair<string, int>(nameof(CharacterStats.Charisma), CharacterStats.Charisma)); }"></NumberInput>
 </div>

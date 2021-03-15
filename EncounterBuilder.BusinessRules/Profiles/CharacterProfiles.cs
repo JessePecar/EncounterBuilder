@@ -71,7 +71,9 @@ namespace EncounterBuilder.BusinessRules.Profiles
             CreateMap<Models.Campaign.Campaign, Campaign>().ReverseMap();
 
             CreateMap<EncounterLink, Models.Character.Character>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CharacterId));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CharacterId))
+                .ForMember(dest => dest.MaxHealth, opt => opt.MapFrom(src => src.CurrentHp))
+                ;
 
             CreateMap<Models.Character.Character, EncounterLink>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -81,21 +83,10 @@ namespace EncounterBuilder.BusinessRules.Profiles
             CreateMap<Encounter, Models.Campaign.Encounter>()
                 .ForMember(dest => dest.EncounterCharacters, opt => opt.MapFrom(src => src.EncounterLinks))
                 .ForMember(dest => dest.Campaign, opt => opt.MapFrom(src => src.Campaign))
+                .ForMember(dest => dest.InitialCharacterCount, opt => opt.MapFrom(src => src.InitialCharacterCount))
                 .ForPath(dest => dest.Campaign.Id, opt => opt.MapFrom(src => (src.Campaign.Id <= 0) ? 0 : src.Campaign.Id))
                 .ReverseMap();
 
-
-
-
         }
-
-        //private List<Models.Character.CharacterAbility> ReturnAbilityList(Models.Character.CharacterAbility ability)
-        //{
-        //    return new List<Models.Character.CharacterAbility>() { ability };
-        //}
-        //private List<Models.Character.CharacterStats> ReturnStatsList(Models.Character.CharacterStats stats)
-        //{
-        //    return new List<Models.Character.CharacterStats>() { stats };
-        //}
     }
 }
