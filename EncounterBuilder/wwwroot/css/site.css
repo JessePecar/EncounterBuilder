@@ -55,26 +55,6 @@ html, body {
     top: -2px;
 }
 
-.nav-item {
-    font-size: 0.9rem;
-    padding-right: 0.5rem;
-}
-
-    .nav-item a {
-        color: red;
-        background-color: rgb(50,50,50);
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
-
-        .nav-item a:hover {
-            background-color: rgb(40,40,40);
-            color: white;
-        }
-
 .content {
     padding-top: 1.1rem;
 }
@@ -126,16 +106,6 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.counter {
-    text-align: center;
-    vertical-align: bottom;
-    display: block;
-    min-height: 100%; /* for the latest browsers which support min-height */
-    height: auto !important; /* for newer IE versions */
-    height: 100%; /* the only height-related attribute that IE6 does not ignore  */
-    background-color: rgba(255,255,255,0.75);
-}
-
 .border{
     border-radius: 4px;
     border-color: lightgray;
@@ -155,7 +125,8 @@ label {
 }
 .site-background {
     background-image: url('/images/parchment-background.jpg');
-    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     
 }
 
@@ -188,3 +159,75 @@ label {
 .h-90{
     height: 95% !important;
 }
+
+@media (max-width: 600px) {
+    .topnav a:not(:first-child) {
+        display: none;
+    }
+
+    .topnav a.icon {
+        float: left;
+        display: block;
+        vertical-align: central;
+    }
+}
+@media (max-width: 600px) {
+    .responsive {
+        overflow: hidden;
+        background-color: #444444
+    }
+
+        .responsive .icon {
+            float: left;
+            
+        }
+
+        .responsive a {
+            float: right;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 5px 5px 5px 5px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+}
+
+.icon span {
+    transition: 0.5s;
+}
+    .icon:hover span {
+        transform: rotate(360deg);
+    }
+.topnav {
+    overflow: hidden;
+    background-color: #444444
+}
+
+    .topnav a {
+        float: right;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 5px 5px 5px 5px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+        .topnav a:hover {
+            background-color: #AA0000;
+            color: #F2F2F2;
+        }
+
+        .topnav a.active {
+            background-color: #880000;
+            color: white;
+        }
+
+    .topnav .icon {
+        display: none;
+    }
+
+
+
+

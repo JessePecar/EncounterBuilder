@@ -1,14 +1,18 @@
 using AutoMapper;
+using ElectronNET.API;
 using EncounterBuilder.BusinessRules.Clients;
 using EncounterBuilder.BusinessRules.Contracts;
 using EncounterBuilder.BusinessRules.Profiles;
 using EncounterBuilder.DAC;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace EncounterBuilder
 {
@@ -28,7 +32,7 @@ namespace EncounterBuilder
         {
             services.AddEntityFrameworkSqlite().AddDbContext<EncounterBuilderDbContext>(options =>
             {
-                options.UseSqlServer(@"Server=PECKERTON\ENCOUNTERDB; Database=ENCOUNTERX; Trusted_Connection=True;");
+                options.UseSqlServer(@"Server=PECKERTON\ENCOUNTERDB;Database=ENCOUNTERX;User Id=UENCOUNTD;Password=123456789;");
                 
                 options.EnableSensitiveDataLogging(true);
             });
@@ -44,6 +48,19 @@ namespace EncounterBuilder
 
             }).CreateMapper());
             services.AddServerSideBlazor();
+
+            services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestral"));
+
+            services.AddCors(options =>
+            {
+                CorsPolicyBuilder builder = new CorsPolicyBuilder();
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+                //TODO: Figure out if needed
+                //builder.AllowCredentials();
+                options.AddDefaultPolicy(builder.Build());
+            });
 
         }
 
@@ -61,6 +78,8 @@ namespace EncounterBuilder
                 app.UseHsts();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -72,7 +91,7 @@ namespace EncounterBuilder
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-           
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }
 }
