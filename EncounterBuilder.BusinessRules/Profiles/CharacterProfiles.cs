@@ -15,7 +15,7 @@ namespace EncounterBuilder.BusinessRules.Profiles
                 .ForMember(dest => dest.Ability, opt => opt.MapFrom(src => src.CharacterAbilities.FirstOrDefault() ?? new CharacterAbility()))
                 .ForMember(dest => dest.Stats, opt => opt.MapFrom(src => src.CharacterStats.FirstOrDefault() ?? new CharacterStats()))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CharacterId))
-                .ForMember(dest => dest.Alignment, opt => opt.MapFrom(src => (int)src.Alignment))
+                .ForMember(dest => dest.Alignment, opt => opt.MapFrom(src => (long)src.Alignment))
                 .ReverseMap();
 
             CreateMap<CharacterStats, Models.Character.CharacterStats>()

@@ -130,6 +130,12 @@ label {
     
 }
 
+.border-dark {
+    border-width: 0.5rem;
+    border-style: solid;
+    
+}
+
 .btn-enabled-plus {
     background-color: #26b050
 }
@@ -193,11 +199,24 @@ label {
         }
 }
 
+@media (max-width: 575px){
+    .col-sm-0{
+        width: 0rem;
+    }
+}
+
+@media (max-width:768px){
+    .col-sm-6{
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+        flex: 0 0 100%;
+    }
+}
 .icon span {
     transition: 0.5s;
 }
     .icon:hover span {
-        transform: rotate(360deg);
+        transform: rotate(180deg);
     }
 .topnav {
     overflow: hidden;
@@ -227,7 +246,3 @@ label {
     .topnav .icon {
         display: none;
     }
-
-
-
-

@@ -1,41 +1,41 @@
 ﻿<div class="row bg-lightish p-2 border-bottom @(IsAltRow ? "bg-alt-light" : "bg-light")">
 
-    <div class="col-1">
+    <div class="col-sm-2 col-md-6 col-lg-2 col-xl-1">
         <input type="button" class="btn btn-success" value="+ Add" @onclick="() => OnAddCharacter.InvokeAsync(Character)"/>
     </div>
-    <div class="col-1"></div>
-    <div class="col-2 border-right">
+    <div class="col-sm-2 col-md-2 col-lg-6 col-xl-9"></div>
+    <div class="col-sm-2 col-md-6 col-lg-4 col-xl-2 border-right">
         <label class="text-dark">@Character.Name</label>
     </div>
     <!-- HP Editable due to Rolling for health-->
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <ToggledEditField InputText="Character.MaxHealth" IsEditable="false" Title="Health"></ToggledEditField>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Armor Class</label></div>
         <div><label class="text-dark">@Character.ArmorClass</label></div>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Strength</label></div>
         <div><label class="text-dark">@Character.Stats.Strength (@(Character.Stats.StrengthBonus < 0 ? "" : "+")@Character.Stats.StrengthBonus)</label></div>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Dexterity</label></div>
         <div><label class="text-dark">@Character.Stats.Dexterity (@(Character.Stats.DexterityBonus < 0 ? "" : "+")@Character.Stats.DexterityBonus)</label></div>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Constitution</label></div>
         <div><label class="text-dark">@Character.Stats.Constitution (@(Character.Stats.ConstitutionBonus < 0 ? "" : "+")@Character.Stats.ConstitutionBonus)</label></div>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Intelligence</label></div>
         <div><label class="text-dark">@Character.Stats.Intelligence (@(Character.Stats.IntelligenceBonus < 0 ? "" : "+")@Character.Stats.IntelligenceBonus)</label></div>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Wisdom</label></div>
         <div><label class="text-dark">@Character.Stats.Wisdom (@(Character.Stats.WisdomBonus < 0 ? "" : "+")@Character.Stats.WisdomBonus)</label></div>
     </div>
-    <div class="col-1 border-right">
+    <div class="col-3 col-sm-3 col-md-6 col-lg-2 col-xl-1 border-right">
         <div><label class="text-dark">Charisma</label></div>
         <div><label class="text-dark">@Character.Stats.Charisma (@(Character.Stats.CharismaBonus < 0 ? "" : "+")@Character.Stats.CharismaBonus)</label></div>
     </div>

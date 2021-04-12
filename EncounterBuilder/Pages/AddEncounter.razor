@@ -6,33 +6,33 @@
 <AddToEncounterModal ShowDialog="IsAddingCharacters" DialogToggle="(st) => { IsAddingCharacters = st; IsAltRow = false; }" AddNewCharacter="(character) => OnCharacterAdded(character)"></AddToEncounterModal>
 <div class="p-3">
     <div class="row list-header ml-2 mr-2 p-2 mb-0">
-        <button class="btn btn-dark col-1" value="" @onclick="() => { IsAddingCharacters = !IsAddingCharacters; IsAltRow = false; }"><span class="oi oi-plus"></span>Add</button>
-        <div class="col-10"></div>
-        <button class="btn btn-success col-1" value="" @onclick="() => OnSubmit()"><span class="oi oi-folder"></span>Save</button>
+        <button class="btn btn-dark col-sm-6 col-md-4 col-lg-2 col-xl-1" value="" @onclick="() => { IsAddingCharacters = !IsAddingCharacters; IsAltRow = false; }"><span class="oi oi-plus"></span>Add</button>
+        <div class="col-sm-0 col-md-4 col-lg-8 col-xl-10"></div>
+        <button class="btn btn-success col-sm-6 col-md-4 col-lg-2 col-xl-1" value="" @onclick="() => OnSubmit()"><span class="oi oi-folder"></span>Save</button>
 
     </div>
     <div class="row bg-light ml-2 mr-2 p-3">
-        <div class="form-group col-2 mr-2">
+        <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 mr-2">
             <label>Encounter Name</label>
             <div class="row">
                 <input class="@(string.IsNullOrWhiteSpace(EncounterName) ? "is-invalid":"") form-control" @bind="EncounterName" placeholder="Enter Name" />
             </div>
         </div>
-        <div class=" col-4">
+        <div class="col-sm-12 col-md-8 col-lg-4 col-xl-4">
             <div><label>Campaign</label></div>
             <div class="row">
-                <select class="form-control mr-2 col-5" @bind="CampaignId">
+                <select class="form-control mr-2 col-sm-12 col-md-8 col-lg-5 col-xl-5" @bind="CampaignId">
                     @foreach (Models.Campaign.Campaign camp in campaigns)
                     {
                         <option value="@camp.Id">@camp.Name</option>
                     }
                 </select>
-                <input class="@(string.IsNullOrWhiteSpace(Campaign.Name) ? "is-invalid":"") @(Campaign.Id < 0 ? "" : "d-none") form-control col-5" @bind="Campaign.Name" />
+                <input class="@(string.IsNullOrWhiteSpace(Campaign.Name) ? "is-invalid":"") @(Campaign.Id < 0 ? "" : "d-none") form-control col-sm-12 col-md-8 col-lg-5 col-xl-5" @bind="Campaign.Name" />
             </div>
         </div>
     </div>
     <div class="bg-light vh-70 ml-2 mr-2 p-1 pt-0 mt-0">
-        <hr class="border-dark" />
+        <hr class="border" />
         <label class="text-center font-weight-bolder w-100 @(!EncounterCharacters?.Any() ?? true ? "" : "d-none")" style="font-size: large;">No characters have been added to the encounter</label>
 
         <div class="pre-scrollable h-90 p-4 shadow @(!EncounterCharacters?.Any() ?? true ? "d-none" : "")">
