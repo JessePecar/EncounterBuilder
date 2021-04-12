@@ -143,8 +143,8 @@ namespace EncounterBuilder.BusinessRules.Clients
             }
             catch(Exception ex)
             {
-                throw ex;
                 Console.WriteLine(ex.Message);
+                throw ex;
             }
         }
         #endregion

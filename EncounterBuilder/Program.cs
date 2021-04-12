@@ -3,6 +3,7 @@ using EncounterBuilder.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
@@ -39,9 +40,10 @@ namespace EncounterBuilder
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
-        //.UseElectron(args);
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration(ConfigureConfiguration)
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
@@ -58,5 +60,12 @@ namespace EncounterBuilder
                     options.Limits.KeepAliveTimeout = TimeSpan.FromHours(5);
                 });
             });
+
+
+        private static void ConfigureConfiguration(IConfigurationBuilder config)
+        {
+            config.SetBasePath(@"C:\APPLICATIONS\Configuration");
+            config.AddJsonFile("Global.json", false, true);
+        }
     }
 }

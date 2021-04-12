@@ -32,7 +32,7 @@ namespace EncounterBuilder
         {
             services.AddEntityFrameworkSqlite().AddDbContext<EncounterBuilderDbContext>(options =>
             {
-                options.UseSqlServer(@"Server=PECKERTON\ENCOUNTERDB;Database=ENCOUNTERX;User Id=UENCOUNTD;Password=123456789;");
+                options.UseSqlServer(Configuration["Global:ConnectionStrings:ENCOUNTERX"]);
                 
                 options.EnableSensitiveDataLogging(true);
             });
@@ -91,7 +91,7 @@ namespace EncounterBuilder
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+            //Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }
 }
